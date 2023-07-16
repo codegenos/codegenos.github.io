@@ -9,5 +9,5 @@ ShowBreadCrumbs: false
 draft: true
 ---
 
-**{{ .Name }}**
+**{{ replace .Name "-" " " | title }}**
 

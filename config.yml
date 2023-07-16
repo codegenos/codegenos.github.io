@@ -49,7 +49,7 @@ params:
     safari_pinned_tab: "<link / abs url>"
 
   label:
-    text: "Home"
+    text: "Code Genos"
     icon: /apple-touch-icon.png
     iconHeight: 35
 

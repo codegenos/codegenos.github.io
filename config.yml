@@ -101,14 +101,21 @@ params:
     keys: ["title", "permalink", "summary", "content"]
 menu:
   main:
-    - identifier: categories
+    - name: Archive
+      url: /archives/
+      weight: 5
+    - identifier: Categories
       name: categories
       url: /categories/
       weight: 10
-    - identifier: tags
+    - identifier: Tags
       name: tags
       url: /tags/
       weight: 20
+    - identifier: Search
+      name: search
+      url: /search/
+      weight: 25
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 pygmentsUseClasses: true
 markup:

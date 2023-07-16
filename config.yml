@@ -101,19 +101,20 @@ params:
     keys: ["title", "permalink", "summary", "content"]
 menu:
   main:
-    - name: Archive
+    - identifier: Archive
+      name: Archive
       url: /archives/
       weight: 5
     - identifier: Categories
-      name: categories
+      name: Categories
       url: /categories/
       weight: 10
     - identifier: Tags
-      name: tags
+      name: Tags
       url: /tags/
       weight: 20
     - identifier: Search
-      name: search
+      name: Search
       url: /search/
       weight: 25
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma

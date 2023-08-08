@@ -5,7 +5,7 @@ date: 2023-08-08T23:58:39+03:00
 description: "This article is about the firefox executable file not found in $PATH error fix when firefox is installed with flatpak."
 tags: ["Linux"]
 ShowToc: false
-ShowBreadCrumbs: false
+ShowBreadCrumbs: true
 draft: false
 ---
 

@@ -4,7 +4,7 @@ title: "Firefox Executable File not Found in $PATH for Firefox Flatpak Installat
 date: 2023-08-08T23:58:39+03:00
 description: "This article is about the firefox executable file not found in $PATH error fix when firefox is installed with flatpak."
 tags: ["Linux", "Flatpak", "Firefox"]
-ShowToc: false
+ShowToc: true
 ShowBreadCrumbs: true
 draft: false
 ---
@@ -21,7 +21,7 @@ flatpak run org.mozilla.firefox
 ---
 
 ## Problem
-But when i want to authenticate my command-line sessions with GitHub using Github CLI Tool command `gh auth login` with `HTTPS` protocol and `Login with a web browser` options i get this error:
+But when i want to authenticate my command-line sessions with **GitHub** using **Github CLI Tool** command `gh auth login` with `HTTPS` protocol and `Login with a web browser` options i get this error:
 
 ```text
 ! Failed opening a web browser at https://github.com/login/device

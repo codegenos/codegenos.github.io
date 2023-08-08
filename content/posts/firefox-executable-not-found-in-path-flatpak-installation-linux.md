@@ -45,7 +45,7 @@ the output is:
 /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ```
 
-We will create the bash file in the `/usr/local/bin` folder:
+We will create the `firefox` bash file that will execute `flatpak run org.mozilla.firefox` command in the `/usr/local/bin` folder (the file: `/usr/local/bin/firefox`):
 
 ### 1. Go to the folder
 

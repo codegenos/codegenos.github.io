@@ -66,4 +66,4 @@ EndSection
 >Option "Tapping" "on": tapping a.k.a. tap-to-click
  Option "TappingButtonMap" "lmr": left/middle/right buttons
 
-After that the problem will be fixed. You will be able to click when you tap touchpad.
+After that the problem will be fixed. Now you will be able to click when you tap touchpad.

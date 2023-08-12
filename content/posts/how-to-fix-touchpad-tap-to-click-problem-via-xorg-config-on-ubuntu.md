@@ -4,6 +4,7 @@ title: "How to Fix Touchpad Tap to Click Problem via Xorg Configuration File on 
 date: 2023-08-11T07:32:05+03:00
 description: "Touchpad tap-to-click sometimes is not working when you first installed Ubuntu linux. You can fix this problem via adding Xorg configuration file for touchpad."
 tags: ["Linux", "Ubuntu", "Touchpad", "Xorg", "Libinput"]
+categories: ["Linux"]
 ShowToc: true
 ShowBreadCrumbs: true
 draft: false

@@ -30,14 +30,15 @@ One way to check which devices are managed by libinput is the xorg logfile. To v
 grep -e "Using input driver 'libinput'" /var/log/xorg.conf.d/Xorg.0.log
 ```
 
->[   181.467] (II) Using input driver 'libinput' for 'Power Button'
-[   181.523] (II) Using input driver 'libinput' for 'Video Bus'
-[   181.604] (II) Using input driver 'libinput' for 'Integrated Camera: Integrated C'
-[   181.651] (II) Using input driver 'libinput' for 'Logitech USB Optical Mouse'
-[   181.700] (II) Using input driver 'libinput' for 'Ideapad extra buttons'
-[   181.734] (II) Using input driver 'libinput' for 'MSFT0001:00 2808:0101 Touchpad'
-[   181.841] (II) Using input driver 'libinput' for 'MSFT0001:00 2808:0101 Mouse'
-[   181.896] (II) Using input driver 'libinput' for 'AT Translated Set 2 keyboard'
+>```[   181.467] (II) Using input driver 'libinput' for 'Power Button'
+>[   181.523] (II) Using input driver 'libinput' for 'Video Bus'
+>[   181.604] (II) Using input driver 'libinput' for 'Integrated Camera: Integrated C'
+>[   181.651] (II) Using input driver 'libinput' for 'Logitech USB Optical Mouse'
+>[   181.700] (II) Using input driver 'libinput' for 'Ideapad extra buttons'
+>[   181.734] (II) Using input driver 'libinput' for 'MSFT0001:00 2808:0101 Touchpad'
+>[   181.841] (II) Using input driver 'libinput' for 'MSFT0001:00 2808:0101 Mouse'
+>[   181.896] (II) Using input driver 'libinput' for 'AT Translated Set 2 keyboard'
+>```
 
 You can see the touchpad device log:
 

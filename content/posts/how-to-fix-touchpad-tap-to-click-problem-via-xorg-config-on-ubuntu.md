@@ -13,16 +13,6 @@ draft: false
 ## Problem
 Touchpad tap-to-click was not working when i first installed Ubuntu linux. I will show you how to fix this problem.
 
-Xorg is responsible for managing input devices like touchpads. It uses libinput software library for input handling. So let's learn some information about Xorg and libinput:
-
-### Xorg
->Xorg, also known as X.Org Server, is an open-source implementation of the X Window System, commonly referred to as "X11" or simply "X." Xorg serves as the display server for graphical environments on Linux and other Unix-like systems. It manages input and output devices such as keyboards, mice, touchpads, monitors, and graphics hardware. You can read more at <a href="https://www.x.org/wiki/" target="_blank">Xorg</a> wiki page.
-
-### Libinput
->Libinput is an open-source software library that provides a unified input handling interface for Linux-based systems, particularly those using the X Window System (Xorg) or Wayland display server protocols. It is designed to manage input devices such as keyboards, mice, touchpads, and other input peripherals in a consistent and efficient manner.
-
->The primary purpose of libinput is to abstract the complexities of dealing with various input devices and to provide a common API that applications and desktop environments can use to access input data. This abstraction allows developers to create user-friendly interfaces and interactions without needing to worry about the specific details of different hardware devices.
-
 ### Check input devices
 One way to check which devices are managed by libinput is the xorg logfile. To view the devices, run the follwing command:
 
@@ -70,3 +60,15 @@ EndSection
 >Option "TappingButtonMap" "lmr": left/middle/right buttons
 
 After that the problem will be fixed. Now you will be able to click when you tap touchpad.
+
+## More Information
+
+Xorg is responsible for managing input devices like touchpads. It uses libinput software library for input handling. So let's learn some information about Xorg and libinput:
+
+### Xorg
+>Xorg, also known as X.Org Server, is an open-source implementation of the X Window System, commonly referred to as "X11" or simply "X." Xorg serves as the display server for graphical environments on Linux and other Unix-like systems. It manages input and output devices such as keyboards, mice, touchpads, monitors, and graphics hardware. You can read more at <a href="https://www.x.org/wiki/" target="_blank">Xorg</a> wiki page.
+
+### Libinput
+>Libinput is an open-source software library that provides a unified input handling interface for Linux-based systems, particularly those using the X Window System (Xorg) or Wayland display server protocols. It is designed to manage input devices such as keyboards, mice, touchpads, and other input peripherals in a consistent and efficient manner.
+
+>The primary purpose of libinput is to abstract the complexities of dealing with various input devices and to provide a common API that applications and desktop environments can use to access input data. This abstraction allows developers to create user-friendly interfaces and interactions without needing to worry about the specific details of different hardware devices.

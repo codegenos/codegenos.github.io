@@ -7,7 +7,7 @@ enableRobotsTXT: true
 buildDrafts: false
 buildFuture: false
 buildExpired: false
-googleAnalytics: G-4R212HX2CR
+googleAnalytics: G-61KMSFG0DT
 
 minify:
   disableXML: true

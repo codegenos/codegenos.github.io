@@ -13,12 +13,6 @@ minify:
   disableXML: true
   minifyOutput: true
 
-markup:
-  defaultMarkdownHandler: blackFriday
-  blackFriday:
-    hrefTargetBlank: true
- 
-
 params:
   env: production # to enable google analytics, opengraph, twitter-cards and schema.
   title: Code Genos
@@ -126,6 +120,7 @@ menu:
       weight: 25
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 pygmentsUseClasses: true
+
 markup:
   highlight:
     # noClasses: false
@@ -134,3 +129,6 @@ markup:
     guessSyntax: true
     lineNos: false
     style: monokai
+  defaultMarkdownHandler: blackFriday
+  blackFriday:
+    hrefTargetBlank: true

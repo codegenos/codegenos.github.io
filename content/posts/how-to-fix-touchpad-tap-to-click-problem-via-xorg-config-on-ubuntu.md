@@ -66,7 +66,7 @@ After that the problem will be fixed. Now you will be able to click when you tap
 Xorg is responsible for managing input devices like touchpads. It uses libinput software library for input handling. So let's learn some information about Xorg and libinput:
 
 ### Xorg
->Xorg, also known as X.Org Server, is an open-source implementation of the X Window System, commonly referred to as "X11" or simply "X." Xorg serves as the display server for graphical environments on Linux and other Unix-like systems. It manages input and output devices such as keyboards, mice, touchpads, monitors, and graphics hardware. You can read more at <a href="https://www.x.org/wiki/" target="_blank">Xorg</a> wiki page.
+>Xorg, also known as X.Org Server, is an open-source implementation of the X Window System, commonly referred to as "X11" or simply "X." Xorg serves as the display server for graphical environments on Linux and other Unix-like systems. It manages input and output devices such as keyboards, mice, touchpads, monitors, and graphics hardware. You can read more at [Xorg](https://www.x.org/wiki/) wiki page.
 
 ### Libinput
 >Libinput is an open-source software library that provides a unified input handling interface for Linux-based systems, particularly those using the X Window System (Xorg) or Wayland display server protocols. It is designed to manage input devices such as keyboards, mice, touchpads, and other input peripherals in a consistent and efficient manner.

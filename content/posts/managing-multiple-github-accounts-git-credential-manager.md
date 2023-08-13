@@ -15,10 +15,10 @@ If you have more than one github account and want to contribute your projects fr
 ## Step 1
 ---
 
-Install `git credential manager`. (You can read <a href="https://github.com/git-ecosystem/git-credential-manager/blob/release/docs/install.md" target="_blank">install instructions</a>)
+Install `git credential manager`. (You can read [install instructions](https://github.com/git-ecosystem/git-credential-manager/blob/release/docs/install.md))
 
 
-For debian users, download the latest <a href="https://github.com/git-ecosystem/git-credential-manager/releases/latest" target="_blank">.deb package</a>, and run the following:
+For debian users, download the latest [.deb package](https://github.com/git-ecosystem/git-credential-manager/releases/latest), and run the following:
 
 ```bash
 sudo dpkg -i <path-to-package>

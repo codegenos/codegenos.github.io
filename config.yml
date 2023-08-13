@@ -131,6 +131,6 @@ markup:
     style: monokai
 
 markup:
-  defaultMarkdownHandler: blackFriday
-  blackFriday:
+  defaultMarkdownHandler: goldmark
+  goldmark:
     hrefTargetBlank: true

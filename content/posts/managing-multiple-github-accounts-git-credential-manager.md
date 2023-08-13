@@ -34,8 +34,10 @@ git-credential-manager configure
 ```
 
 ###### Output
->`Configuring component 'Git Credential Manager'...`
->`Configuring component 'Azure Repos provider'...`
+>```bash
+>Configuring component 'Git Credential Manager'...
+>Configuring component 'Azure Repos provider'...
+>```
 
 ## Step 3
 ---

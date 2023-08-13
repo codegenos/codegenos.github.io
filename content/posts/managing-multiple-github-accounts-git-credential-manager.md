@@ -67,4 +67,14 @@ git config user.email "youremail@yourdomain.com"
 
 ## Result
 
-Now when you push your commits to the github repository "Connect to Github" popup appears. In the "Connect to Github" popup, when you click button, the github login page will be opened in your default web browser. After you enter username and password, you will be able to push the commits successfully.
+Now when you push your commits to the github repository "Connect to Github" popup appears. 
+
+![Connect to Github Popup](images/connect-to-github-popup.jpg)
+
+In the "Connect to Github" popup, when you click "Sign in with your browser" button, the github login page will be opened in your default web browser. 
+
+![Connect to Github Popup](images/sign-in-to-github-gcm-browser.jpg)
+
+After you enter username and password, the authentication will be succeeded and then you will be able to push the commits successfully.
+
+![Connect to Github Popup](images/gcm-github-auth-success.jpg)

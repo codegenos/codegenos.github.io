@@ -5,7 +5,7 @@ date: 2023-08-13T17:53:26+03:00
 description: "How to manage multiple github accounts with git credential manager?"
 tags: ["Github", "Git", "Git Credential Manager"]
 categories: ["Github"]
-ShowToc: true
+ShowToc: false
 ShowBreadCrumbs: true
 draft: false
 ---
@@ -61,7 +61,7 @@ git config --global credential.credentialStore cache
 Set user name and email for each of your git repositories.
 
 ```bash
-git config user.name "youremail@yourdomain.com"
+git config user.name "Your Name"
 git config user.email "youremail@yourdomain.com"
 ```
 
@@ -69,12 +69,12 @@ git config user.email "youremail@yourdomain.com"
 
 Now when you push your commits to the github repository "Connect to Github" popup appears. 
 
-![Connect to Github Popup](images/connect-to-github-popup.jpg)
+![Connect to Github Popup](/posts/images/connect-to-github-popup.jpg)
 
 In the "Connect to Github" popup, when you click "Sign in with your browser" button, the github login page will be opened in your default web browser. 
 
-![Connect to Github Popup](images/sign-in-to-github-gcm-browser.jpg)
+![Sign in to Github to continue to Git Credential Manager](/posts/images/sign-in-to-github-gcm-browser.jpg)
 
 After you enter username and password, the authentication will be succeeded and then you will be able to push the commits successfully.
 
-![Connect to Github Popup](images/gcm-github-auth-success.jpg)
+![Git Credential Manager Github Authentication succeeded](/posts/images/gcm-github-auth-success.jpg)

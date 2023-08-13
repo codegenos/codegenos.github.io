@@ -129,6 +129,8 @@ markup:
     guessSyntax: true
     lineNos: false
     style: monokai
+
+markup:
   defaultMarkdownHandler: blackFriday
   blackFriday:
     hrefTargetBlank: true

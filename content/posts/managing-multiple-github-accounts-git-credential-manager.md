@@ -87,7 +87,7 @@ When you are already logged in to github from your default browser with another 
 
 I'm using firefox (flatpak) so I'll show you how to make `xdg-open` open URL's in new firefox private window. In order to do that:
 
-### Create org.mozilla.firefox-private.desktop
+### 1. Create org.mozilla.firefox-private.desktop
 
 ```bash
 sudo cp /var/lib/flatpak/app/org.mozilla.firefox/current/active/export/share/applications/org.mozilla.firefox.desktop /usr/share/applications/org.mozilla.firefox-private.desktop
@@ -95,7 +95,7 @@ sudo cp /var/lib/flatpak/app/org.mozilla.firefox/current/active/export/share/app
 
 Edit `/usr/share/applications/org.mozilla.firefox-private.desktop` and add `--private-window` to `Exec=`, set `NoDisplay=true`, set `Hidden=true`.
 
-### Set xdg-mime default for x-scheme-handler/https and x-scheme-handler/http
+### 2. Set xdg-mime default for x-scheme-handler/https and x-scheme-handler/http
 
 ```bash
 xdg-mime default org.mozilla.firefox-private.desktop x-scheme-handler/https

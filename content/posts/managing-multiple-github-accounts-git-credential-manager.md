@@ -93,7 +93,10 @@ I'm using firefox (flatpak) so I'll show you how to make `xdg-open` open URL's i
 sudo cp /var/lib/flatpak/app/org.mozilla.firefox/current/active/export/share/applications/org.mozilla.firefox.desktop /usr/share/applications/org.mozilla.firefox-private.desktop
 ```
 
-Edit `/usr/share/applications/org.mozilla.firefox-private.desktop` and add `--private-window` to `Exec=`, set `NoDisplay=true`, set `Hidden=true`.
+Edit `/usr/share/applications/org.mozilla.firefox-private.desktop`:
+- add `--private-window` to `Exec=`
+- set `NoDisplay=true`
+- set `Hidden=true`.
 
 ### 2. Set xdg-mime default for x-scheme-handler/https and x-scheme-handler/http
 

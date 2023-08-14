@@ -98,6 +98,21 @@ Edit `/usr/share/applications/org.mozilla.firefox-private.desktop`:
 - set `NoDisplay=true`
 - set `Hidden=true`.
 
+`/usr/share/applications/org.mozilla.firefox-private.desktop` content should be:
+```
+Exec=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=firefox --file-forwarding org.mozilla.firefox --private-window @@u %u @@
+Icon=org.mozilla.firefox
+Terminal=false
+Type=Application
+MimeType=text/html;text/xml;application/xhtml+xml;application/vnd.mozilla.xul+xml;text/mml;x-scheme-handler/http;x-scheme-handler/https;
+StartupNotify=true
+Categories=Network;WebBrowser;
+StartupWMClass=firefox
+X-Flatpak=org.mozilla.firefox
+NoDisplay=true
+Hidden=true
+```
+
 ### 2. Set xdg-mime default for x-scheme-handler/https and x-scheme-handler/http
 
 ```bash

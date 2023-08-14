@@ -80,3 +80,5 @@ In the "Connect to Github" popup, when you click "Sign in with your browser" but
 After you enter username and password, the authentication will be succeeded and then you will be able to push the commits successfully.
 
 ![Git Credential Manager Github Authentication succeeded](/posts/images/gcm-github-auth-success.jpg)
+
+When you are already logged in to github from your default browser with another user other than the git repository's user, you cannot authenticate. You can force git credential manager to open your default browser in private mode.

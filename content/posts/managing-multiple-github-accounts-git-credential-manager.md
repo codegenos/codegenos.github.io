@@ -17,7 +17,6 @@ If you have more than one github account and want to contribute your projects fr
 
 Install `git credential manager`. (You can read [install instructions](https://github.com/git-ecosystem/git-credential-manager/blob/release/docs/install.md))
 
-
 For debian users, download the latest [.deb package](https://github.com/git-ecosystem/git-credential-manager/releases/latest), and run the following:
 
 ```bash
@@ -81,4 +80,30 @@ After you enter username and password, the authentication will be succeeded and 
 
 ![Git Credential Manager Github Authentication succeeded](/posts/images/gcm-github-auth-success.jpg)
 
-When you are already logged in to github from your default browser with another user other than the git repository's user, you cannot authenticate. You can force git credential manager to open your default browser in private mode.
+## How to Open Github Login Page in New Private Window for firefox?
+When you are already logged in to github from your default browser with another user other than the git repository's user, you cannot authenticate. You can force git credential manager to open your default browser in private window (incognito window). Git credential manages uses `xdg-open` to open the github login page in the browser. You can see the source code [here](https://github.com/git-ecosystem/git-credential-manager/blob/main/src/shared/Core/BrowserUtils.cs#L75).
+
+>`xdg-open` is a command-line utility that is used in Linux and other Unix-like operating systems to open files and URLs using the default applications set by the user's desktop environment. It is part of the XDG (Desktop Entry Specification) framework, which aims to standardize file and URL handling across different desktop environments.
+
+I'm using firefox (flatpak) so I'll show you how to make `xdg-open` open URL's in new firefox private window. In order to do that:
+
+### Create org.mozilla.firefox-private.desktop
+
+```bash
+sudo cp /var/lib/flatpak/app/org.mozilla.firefox/current/active/export/share/applications/org.mozilla.firefox.desktop /usr/share/applications/org.mozilla.firefox-private.desktop
+```
+
+Edit `/usr/share/applications/org.mozilla.firefox-private.desktop` and add `--private-window` to `Exec=`, set `NoDisplay=true`, set `Hidden=true`.
+
+### Set xdg-mime default for x-scheme-handler/https and x-scheme-handler/http
+
+```bash
+xdg-mime default org.mozilla.firefox-private.desktop x-scheme-handler/https
+```
+
+```bash
+xdg-mime default org.mozilla.firefox-private.desktop x-scheme-handler/http
+```
+
+#### Note
+>Other programs using `xdg-open` to open Urls will open the urls in new private window after you make these changes in `xdg-mime`. 

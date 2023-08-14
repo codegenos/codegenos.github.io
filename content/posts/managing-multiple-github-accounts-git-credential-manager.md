@@ -115,7 +115,7 @@ Hidden=true
 
 >**NoDisplay:** The NoDisplay entry is used to indicate whether an application should be displayed in menus and application launchers. If `NoDisplay=true` is set in a `.desktop` file, the application won't appear in user-facing menus or lists. This is typically used for applications that are meant to be run in the background or that don't have a direct user interface.
 
->**Hidden:** The Hidden entry is used to indicate that an application should be hidden from the user interface entirely. Unlike NoDisplay, which still allows the application to be launched if you know its name, ´Hidden=true´ ensures that the application is entirely hidden from the user.
+>**Hidden:** The Hidden entry is used to indicate that an application should be hidden from the user interface entirely. Unlike NoDisplay, which still allows the application to be launched if you know its name, `Hidden=true` ensures that the application is entirely hidden from the user.
 
 ### 2. Set xdg-mime default for x-scheme-handler/https and x-scheme-handler/http
 

@@ -56,6 +56,14 @@ Set credential store type. I use cache credential store which uses Git's built-i
 git config --global credential.credentialStore cache
 ```
 
+If you want to change cache timeout, use this command:
+
+```bash
+git config --global credential.helper 'cache --timeout 3600'
+```
+
+The credential.helper cache timeout value tells Git to keep your password cached in memory for a particular amount of seconds. Default value is `900` seconds.
+
 ## Step 5
 ---
 

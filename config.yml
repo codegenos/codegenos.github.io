@@ -72,7 +72,7 @@ params:
   # home-info mode
   homeInfoParams:
     Title: "Hi there \U0001F44B"
-    Content: Welcome to Code Genos Programming and Development Blog
+    Content: Welcome to Code Genos Computers, Programming and Development Blog
 
   socialIcons:
     - name: twitter

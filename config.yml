@@ -16,8 +16,8 @@ minify:
 params:
   env: production # to enable google analytics, opengraph, twitter-cards and schema.
   title: Code Genos
-  description: "Code Genos description"
-  keywords: [Code Genos]
+  description: "Code Genos Computers, Programming and Development Blog"
+  keywords: [Code Genos, Computers, Programming, Development, Blog]
   author: CodeGenos
   images: ["<link or path of image for opengraph, twitter-cards>"]
   DateFormat: "January 2, 2006"

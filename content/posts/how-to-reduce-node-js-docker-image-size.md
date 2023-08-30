@@ -10,7 +10,7 @@ ShowBreadCrumbs: true
 draft: false
 ---
 
-I had a web application that is written in Node.js and I wanted to dockerize it. So went to the Node.js official site and found [Dockerizing a Node.js web app](https://nodejs.org/en/docs/guides/nodejs-docker-webapp) article. I created the `Dockerfile` as it says in the article. Then I built the docker image with `docker build`, the created image size was `1.09GB`
+I had a web application which is written in Node.js and I wanted to dockerize it. So went to the Node.js official site and found [Dockerizing a Node.js web app](https://nodejs.org/en/docs/guides/nodejs-docker-webapp) article. I created the `Dockerfile` as it says in the article. Then I built the docker image with `docker build`, the created image size was `1.09GB`
 
 ## Dockerfile which produce 1.09GB docker image
 
@@ -36,7 +36,9 @@ EXPOSE 8080
 CMD [ "node", "server.js" ]
 ```
 
-Bigger images requires disk space and downloading them takes longer time. 1GB size was too big for me and i thought it could be reduced and investigated. The image size can be reduced by the following steps.
+Bigger images requires disk space and downloading them takes longer time. 1GB size was too big for me and i thought it could be reduced and investigated. 
+
+The image size can be reduced by the following steps:
 
 ### 1. Choose a Smaller Base Image
 `jessie`, `buster`, `stretch` and `alpine` images are the smaller images. I've chosen the `alpine` image.
@@ -48,7 +50,9 @@ FROM node:18-alpine
 
 ### 2. Use Multi-Stage Docker Builds
 
-Multi-stage builds are useful to anyone who has struggled to optimize Dockerfiles and then copy only the needed files to run the application into the final image.
+Multi-stage builds are useful to anyone who has struggled to optimize Dockerfiles and then copy only the needed files to run the application into the final image. 
+
+The two stages are `FROM node:18-alpine as builder` and `FROM node:18-alpine as final`:
 
 ```dockerfile
 # Node.js alpine image as the base image. This is the build image stage
@@ -85,6 +89,10 @@ CMD ["node", "server.js"]
 ### 3. Copy only the required files
 
 Reduce the size of the image by making sure to only `COPY` the required files.
+
+`COPY --from=builder /app/node_modules /app/node_modules` copies node_modules
+
+`COPY --from=builder /app/server.js /app/server.js` copies `server.js` file which is the only required js file for my application to run.
 
 ```dockerfile
 # Node.js alpine image as the base image. This is the build image stage
@@ -157,5 +165,5 @@ CMD ["node", "server.js"]
 ```
 
 ### Result
-The final image size is reduced to `178MB`.
+After I applied all the steps, the final image size is reduced to `178MB`.
 

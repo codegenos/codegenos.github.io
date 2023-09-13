@@ -1,7 +1,7 @@
 ---
 author: "CodeGenos"
 title: "How to pass Docker Environment Variables to Vite Env Variables for Containerized Vue.js Applications on Docker Run?"
-date: 2023-09-13T21:23:16+03:00
+date: 2023-09-13T23:43:16+03:00
 description: "In this article i'll show you how to pass Docker Environment Variables to Vite Env Variables for Containerized Vue.js Applications on Docker Run"
 tags: ["Docker", "Vite", "Vue.js"]
 categories: ["Docker", "Vue.js"]

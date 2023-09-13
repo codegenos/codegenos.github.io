@@ -10,7 +10,10 @@ ShowBreadCrumbs: true
 draft: false
 ---
 
-Environment variables can only be used in Vue.js applications at build time. The variables are hardcoded in javascript files during build. When you build docker image for the Vue.js application, you use the same image for test and production environments. But the Vue.js application config values can be different in test and production environments. For example: api url configuration value. Since they are different in those environments you must pass the configuration values for test and production environments at docker run:
+Environment variables can only be used in Vue.js applications at build time and the variables are hardcoded in javascript files during build. 
+When you build docker image for the Vue.js application, you use the same image for `test` and `production` environments. 
+But the Vue.js application config values can be different in `test` and `production` environments. For example: api url configuration value. 
+Since the variables are different in those environments you must pass the configuration values for test and production environments at docker run:
 
 ```bash
 docker run -d -p 8080:80 -e VARIABLE1=var1value -e VARIABLE2=var2value my-image
@@ -19,9 +22,9 @@ docker run -d -p 8080:80 -e VARIABLE1=var1value -e VARIABLE2=var2value my-image
 But the Vue.js configuration variables are hardcoded to javascript files in the docker image after build. We must find a way to substitute the values in javascript files when a container is started. I'll show you how to do that.
 
 ## Vue.js application
-The Vue.js application uses env variables. We have to variables: `VITE_VARIABLE1` and `VITE_VARIABLE2`.
+The Vue.js application uses Vite env variables. We have to variables: `VITE_VARIABLE1` and `VITE_VARIABLE2`.
 
-We are using Vite.js build tool. In Vite, environmental variables need to be prefixed with `VITE_` as in `VITE_*variable-name`.
+We are using Vite.js build tool and şn Vite, environmental variables need to be prefixed with `VITE_` as in `VITE_*variable-name`.
 
 ### .env Files
 In `.env.development` file we can hardcode the variables:
@@ -68,7 +71,7 @@ import { config } from '../config'
 ```
 
 ### vite.config.ts
-In `vite.config.ts` we create a separate output bundle for config.js using `manualChunks`. Because we will only substitute the variables in config.js file. We are doing this because we don't want to accidentally change values that might have the same text as our variable names in other javascript files  
+In `vite.config.ts` we create a separate output bundle for `config.js` using `manualChunks`. Because we will only substitute the variables in config.js file. We are doing this because we don't want to accidentally change the values that might have the same text as our variable names in other javascript files.
 
 ```ts
 import { defineConfig } from 'vite'
@@ -111,8 +114,11 @@ After we serve the application with `npm run dev`. The page looks like this:
 ## DockerFile
 
 In docker file we run `entrypoint.sh` as `ENTRYPOINT`. In `entrypoint.sh` we substitute variables and run `nginx`. 
+
 We are substituting variables in `ENTRYPOINT` in order to read the environment variables passed at `docker run`. 
+
 If we have used `RUN /entrypoint.sh` instead of `ENTRYPOINT ["/entrypoint.sh"]` we wouldn't be able to environment variables at `docker run`. 
+
 Because `RUN` is used during image build time to execute commands and create image layers, while `ENTRYPOINT` is used to define the container's main process or command at runtime.
 
 ```DockerFile
@@ -139,8 +145,12 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 ### entrypoint.sh file
 In `entrypoint.sh` we substitute variables and run `nginx`. 
+
 In `keys` array we store our variables. 
-We iterate the keys and get environment variable values with `value=$(eval echo "\$$key")`. And then replace the value using `sed` command.
+
+We iterate the keys and get environment variable values with `value=$(eval echo "\$$key")`. 
+
+And then replace the value using `sed` command.
 `sed` command replaces `__VARIABLE1__` and `__VARIABLE2__` values with the environment variables in docker run: `docker run -d -p 8080:80 -e VARIABLE1=var1valueprod -e VARIABLE2=var2valueprod my-image`.
 
 ```bash

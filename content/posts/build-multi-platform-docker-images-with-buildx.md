@@ -1,7 +1,7 @@
 ---
 title: "Build Multi Platform Docker Images with Buildx"
 date: 2023-08-27T13:41:03+03:00
-description: "This article is about the how to multi-platform Docker images from a single Dockerfile, enabling you to create images that can run on different architectures and operating systems."
+description: "How to multi-platform Docker images from a single Dockerfile, enabling you to create images that can run on different architectures and operating systems."
 tags: ["Docker", "Docker Buildx", "Multi Platform Docker", "Raspberry Pi"]
 categories: ["Docker", "Docker Buildx"]
 ShowToc: false

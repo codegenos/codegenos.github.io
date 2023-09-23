@@ -1,6 +1,6 @@
 ---
 author: "CodeGenos"
-title: "Typescript: Extend Array type with sum, count, avg, min and max generic Aggregate Functions"
+title: "Typescript: Extend Array type with sum count avg min max Aggregates"
 date: 2023-09-03T21:20:16+03:00
 description: "Add generic aggregate functions like count, sum, average, min and max to Arrays in Typescript"
 tags: ["Typescript", "Javascript", "prototype"]

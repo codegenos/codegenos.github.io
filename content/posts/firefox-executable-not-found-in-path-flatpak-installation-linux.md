@@ -1,6 +1,6 @@
 ---
 author: "CodeGenos"
-title: "Firefox Executable File not Found in $PATH for Firefox Flatpak Installation on Linux"
+title: "Firefox Executable File not Found in $PATH for Flatpak on Linux"
 date: 2023-08-08T23:58:39+03:00
 description: "This article is about the firefox executable file not found in $PATH error fix when firefox is installed with flatpak."
 tags: ["Linux", "Flatpak", "Firefox"]

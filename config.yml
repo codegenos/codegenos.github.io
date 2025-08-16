@@ -76,6 +76,14 @@ params:
     Title: "Hi there \U0001F44B"
     Content: Welcome to Code Genos Computers, Programming and Development Blog
 
+  social:
+    - name: twitter
+      url: "https://twitter.com/codegenos77"
+      icon: twitter
+    - name: github
+      url: "https://github.com/codegenos"
+      icon: github
+
   socialIcons:
     - name: twitter
       url: "https://twitter.com/codegenos77"

@@ -116,8 +116,8 @@ menu:
       url: /categories/
       weight: 10
     - identifier: About
-      name: Hakkımızda
-      url: /hakkimizda/
+      name: About
+      url: /about/
       weight: 15
     - identifier: Tags
       name: Tags
@@ -128,12 +128,12 @@ menu:
       url: /search/
       weight: 25
     - identifier: Contact
-      name: İletişim
-      url: /iletisim/
+      name: Contact
+      url: /contact/
       weight: 30
     - identifier: Privacy
-      name: Gizlilik
-      url: /gizlilik-politikasi/
+      name: Privacy
+      url: /privacy-policy/
       weight: 200
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 pygmentsUseClasses: true

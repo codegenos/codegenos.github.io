@@ -51,11 +51,21 @@ You will be prompted for the remote user password unless using SSH keys.
 ```bash
 scp username@remote_server:/path/to/remote/file.zip /path/to/local/folder
 ```
+- `username`: your username on the remote server
+- `remote_server`: hostname or IP address of the remote server
+- `/path/to/remote/file.zip`: the remote file you want to copy
+- `/path/to/local/folder`: the local destination folder (use `.` for current directory)
+
+This downloads the file from the remote server to your local machine. You’ll be prompted for the remote user’s password unless using SSH keys.
 
 ### How do I copy from one remote server to another?
 ```bash
 scp username1@remote_server1:/path/to/remote/file.zip username2@remote_server2:/path/to/destination/folder
 ```
+- `username1@remote_server1:/path/to/remote/file.zip`: source file on the first server
+- `username2@remote_server2:/path/to/destination/folder`: destination folder on the second server
+
+The transfer happens directly between the two servers. You need SSH access to both, and you may be prompted for credentials for each host.
 
 ## Copy folders with scp
 You can copy an entire directory recursively.
@@ -70,11 +80,22 @@ scp -r /path/to/local/folder username@remote_server:/path/to/destination/folder
 ```bash
 scp -r username@remote_server:/path/to/remote/folder /path/to/local/folder
 ```
+- `-r`: copy the folder and all its contents
+- `username`/`remote_server`: the remote account and host
+- `/path/to/remote/folder`: the remote directory to download
+- `/path/to/local/folder`: the local destination directory
+
+This downloads the entire directory from the remote server to the local folder.
 
 ### Copy a folder between two remote servers
 ```bash
 scp -r username1@remote_server1:/path/to/remote/folder username2@remote_server2:/path/to/remote/folder
 ```
+- `-r`: copy the folder and all its contents
+- `username1@remote_server1:/path/to/remote/folder`: source directory on the first server
+- `username2@remote_server2:/path/to/remote/folder`: destination directory on the second server
+
+The directory is copied server‑to‑server. Ensure you have access to both servers; you may be prompted to authenticate on each.
 
 ## Useful options and tips
 - Use a custom port (uppercase P):

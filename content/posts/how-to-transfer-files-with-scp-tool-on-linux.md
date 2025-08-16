@@ -1,112 +1,131 @@
 ---
 author: "CodeGenos"
-title: "How to Transfer Files with Scp Tool on Linux"
+title: "How to Transfer Files with scp on Linux"
 date: 2023-09-08T21:28:35+03:00
-description: "In this article i'll show you how to transfer files and folders using `scp` command-line tool on Linux"
-tags: ["Linux", "ssh", "scp"]
+description: "Learn how to use the scp command to securely copy files and folders on Linux, with Ubuntu install steps, ports, SSH keys, and practical examples."
+tags: ["Linux", "ssh", "scp", "Ubuntu", "OpenSSH"]
 categories: ["Linux", "ssh"]
-ShowToc: false
+ShowToc: true
 ShowBreadCrumbs: true
 draft: false
 ---
 
-The other day I needed to copy files from my local machine to my `Raspberry Pi` with `DietPi` without desktop installed. My only method of accessing the Raspberry Pi was via `ssh`. I wanted to transfer files in the simplest way on terminal. I searched how to make this work and found the `scp` tool. 
+Need to copy files to a headless Raspberry Pi over SSH? The `scp` command lets you securely transfer files and folders between machines on Linux. This guide covers local↔remote and remote↔remote copies, plus useful flags.
 
-In this article i'll show you how to transfer files and folders using `scp` command-line tool.
+## What is the scp command?
+`scp` (secure copy) securely transfers files over an `SSH` connection. It uses the same authentication and encryption as SSH.
 
-## SCP command
-`scp` (Secure Copy Protocol) is a command-line tool that allows you to securely transfer files and folders between different machines over an `SSH` (Secure Shell) connection. 
+In plain terms, scp is like copying a file from one folder to another, except the other “folder” is a computer you can reach over SSH. It’s simple, fast to use for everyday tasks, and available on most Linux and macOS systems by default.
 
-It uses the same authentication and security as SSH to ensure that your data is transferred securely.
+- What you might use it for: sending project files to a server, backing up a directory, fetching logs, or moving a build artifact to a remote host.
+- Why people choose it: straightforward commands, secure by default, no extra setup when SSH already works.
 
-You can both transfer between two remote hosts and from a local machine to remote host or from remote host to local machine.
+Note: In modern OpenSSH releases, `scp` uses the SFTP protocol under the hood by default for safer behavior. You can force legacy scp/rcp behavior with `-O` if needed.
 
-## Copy files with SCP command
-SCP lets you securely transfer files between two remote hosts or a remote machine.
+## Cheat sheet
+- Local → Remote: `scp ./file.zip user@host:/path/`
+- Remote → Local: `scp user@host:/path/file.zip ./`
+- Remote → Remote: `scp user1@host1:/path/file.zip user2@host2:/dest/`
+- Copy directory: `scp -r ./dir user@host:/dest/`
+- Custom port: `scp -P 2222 file.zip user@host:/path/`
+- SSH key: `scp -i ~/.ssh/id_ed25519 file.zip user@host:/path/`
+- Compression: `scp -C file.zip user@host:/path/`
+- Preserve times/modes: `scp -p file.zip user@host:/path/`
+- Limit bandwidth (Kb/s): `scp -l 5000 file.zip user@host:/path/`
 
-### Copy file from Local Machine to Remote Server
-Here's how you can copy a file from your local machine to a remote server:
+## Copy files with scp
+SCP lets you securely transfer files between a local machine and a remote server, or even between two remote servers.
 
+### How do I copy a file from local to remote?
 ```bash
 scp /path/to/local/file.zip username@remote_server:/path/to/destination/folder
 ```
+- `/path/to/local/file.zip`: local file to copy
+- `username`: your username on the remote server
+- `remote_server`: hostname or IP address
+- `/path/to/destination/folder`: destination path on the remote server
 
-- `/path/to/local/file.zip`: Replace this with the path to the local file you want to copy.
-- `username`: Replace this with your username on the remote server.
-- `remote_server`: Replace this with the hostname or IP address of the remote server.
-- `/path/to/destination/folder`: Replace this with the path to the destination folder on the remote server.
+You will be prompted for the remote user password unless using SSH keys.
 
-You will be prompted for the password of the remote user, and once you enter it correctly, the file will be securely copied to the remote server folder destination.
-
-### Copy file from Remote Server to Local Machine
-If you want to copy a file from the remote server to your local machine, you can reverse the source and destination paths in the scp command:
-
+### How do I copy a file from remote to local?
 ```bash
-scp username@remote_server:/path/to/destination/file.zip /path/to/local/folder
+scp username@remote_server:/path/to/remote/file.zip /path/to/local/folder
 ```
 
-### Copy file from Remote Server to Remote Server
-You can also copy from Remote Server to Remote Server:
-
+### How do I copy from one remote server to another?
 ```bash
-scp username1@remote_server1:/path/to/destination/file.zip username2@remote_server2:/path/to/destination/folder
+scp username1@remote_server1:/path/to/remote/file.zip username2@remote_server2:/path/to/destination/folder
 ```
 
-## Copy folders with SCP command
-You can also copy the contents inside a folder instead of copying all files one by one.
+## Copy folders with scp
+You can copy an entire directory recursively.
 
-### Copy folder from Local Machine to Remote Server
-Here's how you can copy a folder from your local machine to a remote server:
-
+### Copy a folder from local to remote
 ```bash
 scp -r /path/to/local/folder username@remote_server:/path/to/destination/folder
 ```
+- `-r`: recursively copy the folder and its contents
 
-- `-r`: This option is used to recursively copy the entire folder and its contents.
-- `/path/to/local/folder`: Replace this with the path to the local folder you want to copy.
-- `username`: Replace this with your username on the remote server.
-- `remote_server`: Replace this with the hostname or IP address of the remote server.
-- `/path/to/destination/folder`: Replace this with the path to the destination folder on the remote server.
-
-You will be prompted for the password of the remote user, and once you enter it correctly, the folder and its contents will be securely copied to the remote server folder destination.
-
-### Copy folder from Remote Server to Local Machine
-If you want to copy a folder from the remote server to your local machine, you can reverse the source and destination paths in the scp command:
-
+### Copy a folder from remote to local
 ```bash
 scp -r username@remote_server:/path/to/remote/folder /path/to/local/folder
 ```
 
-### Copy folder from Remote Server to Remote Server
-You can also copy from Remote Server to Remote Server:
-
+### Copy a folder between two remote servers
 ```bash
 scp -r username1@remote_server1:/path/to/remote/folder username2@remote_server2:/path/to/remote/folder
 ```
 
+## Useful options and tips
+- Use a custom port (uppercase P):
+  ```bash
+  scp -P 2222 file.zip user@host:/path/
+  ```
+- Use an SSH key (identity file):
+  ```bash
+  scp -i ~/.ssh/id_ed25519 file.zip user@host:/path/
+  ```
+- Enable compression (helpful over slow links):
+  ```bash
+  scp -C file.zip user@host:/path/
+  ```
+- Preserve timestamps and modes:
+  ```bash
+  scp -p file.zip user@host:/path/
+  ```
+- Limit bandwidth (Kb/s):
+  ```bash
+  scp -l 5000 file.zip user@host:/path/
+  ```
+- Quote paths with spaces:
+  ```bash
+  scp "My File.zip" user@host:"/path with space/"
+  ```
+
 ## Install scp on Ubuntu
-To use `scp` on Ubuntu, you don't need to install it separately because it is included by default with the `OpenSSH` package, which is a standard component of most Linux distributions, including Ubuntu. 
+`scp` is included with the `OpenSSH` client on Ubuntu. If it’s missing:
 
-However, if for some reason you don't have `scp` installed, you can install it along with the full `OpenSSH` suite using the following steps:
+1. Open a terminal
+2. Update package list
+   ```bash
+   sudo apt update
+   ```
+3. Install OpenSSH client
+   ```bash
+   sudo apt install openssh-client
+   ```
+4. Verify installation
+   ```bash
+   command -v scp && ssh -V
+   ```
 
-1. **Open a Terminal**
-2. **Update the Package List**
-```bash
-sudo apt update
-```
-3. **Install OpenSSH Client**
-```bash
-sudo apt install openssh-client
-```
+## Common errors and fixes
+- Permission denied (publickey): ensure your private key permissions are strict:
+  ```bash
+  chmod 600 ~/.ssh/id_*
+  ```
+- Connection times out or refused: check firewall/security groups and confirm the SSH port, then use `-P PORT`.
+- Host key verification failed: verify the server’s fingerprint and update `~/.ssh/known_hosts` if the server legitimately changed (e.g., `ssh-keygen -R host && ssh host`).
 
-This command will install the `scp` tool along with other SSH client utilities.
-
-4. **Verify the Installation**
-
-```bash
-scp --version
-```
-
-Thanks for reading.
-
-Happy coding!
+## References
+- OpenSSH scp manual: https://man.openbsd.org/scp

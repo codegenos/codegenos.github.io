@@ -7,8 +7,6 @@ slug: "about"
 ShowToc: false
 ---
 
-# About
-
 Code Genos is a blog that produces content focused on computers, software development, and technology. Our goal is to provide developers and technology enthusiasts with practical information, guides, and best practices.
 
 - Focus areas: Software development, DevOps, cloud technologies, open-source tools

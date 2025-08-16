@@ -7,8 +7,6 @@ slug: "contact"
 ShowToc: false
 ---
 
-# Contact
-
 For feedback, suggestions, and collaborations, you can reach us through the channels below.
 
 - GitHub: https://github.com/codegenos

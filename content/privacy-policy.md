@@ -7,8 +7,6 @@ slug: "privacy-policy"
 ShowToc: false
 ---
 
-# Privacy Policy
-
 - At Code Genos, we care about our visitors' privacy.
 - This Privacy Policy explains what information is collected when you visit our site and how it is used.
 

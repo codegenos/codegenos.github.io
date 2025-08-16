@@ -4,6 +4,7 @@ description: "Privacy policy for the Code Genos website"
 summary: "Code Genos privacy policy"
 layout: "single"
 slug: "privacy-policy"
+ShowToc: false
 ---
 
 # Privacy Policy

@@ -4,6 +4,7 @@ description: "Get in touch with Code Genos"
 summary: "Contact us"
 layout: "single"
 slug: "contact"
+ShowToc: false
 ---
 
 # Contact

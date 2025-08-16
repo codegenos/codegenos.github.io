@@ -4,6 +4,7 @@ description: "Information about Code Genos"
 summary: "Who is Code Genos and what do we do?"
 layout: "single"
 slug: "about"
+ShowToc: false
 ---
 
 # About

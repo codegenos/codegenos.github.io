@@ -77,12 +77,7 @@ params:
     Content: Welcome to Code Genos Computers, Programming and Development Blog
 
   social:
-    - name: twitter
-      url: "https://twitter.com/codegenos77"
-      icon: twitter
-    - name: github
-      url: "https://github.com/codegenos"
-      icon: github
+    twitter: "https://twitter.com/codegenos77"
 
   socialIcons:
     - name: twitter

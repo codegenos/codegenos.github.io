@@ -102,8 +102,8 @@ volumes:
 - `GENERIC_TIMEZONE` and `TZ`: Time zone for workflows and the container. Keep both aligned (e.g., `Europe/Istanbul`).
 
 ### Volumes
-`n8n_data`: A volume mapped to `/home/node/.n8n`. n8n saves its SQLite database file and encryption key here.
-`./local-files`: A local directory shared between the n8n instance and host. In n8n, use the `/files` path to read from and write to this directory.
+- `n8n_data`: A volume mapped to `/home/node/.n8n`. n8n saves its SQLite database file and encryption key here.
+- `./local-files`: A local directory shared between the n8n instance and host. In n8n, use the `/files` path to read from and write to this directory.
 
 ## Networking
 - This example exposes n8n over HTTP on your LAN and does not use a domain name.
@@ -154,7 +154,6 @@ docker compose stop
 ## Helpful resources
 
 - Docs home: https://docs.n8n.io/
-- Environment variables reference: https://docs.n8n.io/reference/environment-variables/
 - Docker deployment guide: https://docs.n8n.io/hosting/installation/docker/
 - Community forum: https://community.n8n.io/
 - GitHub (releases, issues): https://github.com/n8n-io/n8n

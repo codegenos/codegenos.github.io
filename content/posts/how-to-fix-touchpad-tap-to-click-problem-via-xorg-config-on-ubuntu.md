@@ -1,8 +1,8 @@
 ---
 author: "CodeGenos"
-title: "How to Fix Touchpad Tap to Click Problem via Xorg Config on Ubuntu"
+title: "Ubuntu: Fix Touchpad Tap-to-Click via Xorg (libinput)"
 date: 2023-08-11T07:32:05+03:00
-description: "Touchpad tap-to-click sometimes is not working when you first installed Ubuntu linux. You can fix this problem via adding Xorg configuration file for touchpad."
+description: "Tap-to-click not working on Ubuntu? Enable it in GNOME or with an Xorg libinput config (30-touchpad.conf). Steps, commands, and verification."
 tags: ["Linux", "Ubuntu", "Touchpad", "Xorg", "Libinput"]
 categories: ["Linux"]
 ShowToc: true
@@ -11,64 +11,112 @@ draft: false
 ---
 
 ## Problem
-Touchpad tap-to-click was not working when i first installed Ubuntu linux. I will show you how to fix this problem.
+Tap-to-click on the touchpad was not working after I installed Ubuntu. Here are quick and advanced fixes.
 
-### Check input devices
-One way to check which devices are managed by libinput is the xorg logfile. To view the devices, run the follwing command:
+Note: This guide’s fix targets Xorg. Under Xorg, the libinput driver reads options from xorg.conf.d, so we can enforce Tapping system-wide. On Wayland, these options are managed by GNOME; use the GUI toggle instead—Xorg configs do not apply to Wayland sessions.
+
+## TL;DR / Quick start
+- Wayland/GUI: Settings → Mouse & Touchpad → enable "Tap to Click".
+- Xorg (terminal): create config and enable tapping, then re-login.
 
 ```bash
-grep -e "Using input driver 'libinput'" /var/log/xorg.conf.d/Xorg.0.log
+# Create config dir and write touchpad config
+sudo install -d /etc/X11/xorg.conf.d/
+sudo tee /etc/X11/xorg.conf.d/30-touchpad.conf >/dev/null <<'EOF'
+Section "InputClass"
+    Identifier "libinput touchpad"
+    MatchIsTouchpad "on"
+    MatchDriver "libinput"
+    Driver "libinput"
+    Option "Tapping" "on"
+    Option "TappingButtonMap" "lmr"
+EndSection
+EOF
+
+# Reboot or log out/in, then verify
+grep -i "Using input driver 'libinput'" /var/log/Xorg.0.log || \
+  grep -i "Using input driver 'libinput'" ~/.local/share/xorg/Xorg.0.log || \
+  sudo journalctl -b _COMM=Xorg | grep -i "Using input driver 'libinput'"
 ```
 
->```[   181.467] (II) Using input driver 'libinput' for 'Power Button'
->[   181.523] (II) Using input driver 'libinput' for 'Video Bus'
->[   181.604] (II) Using input driver 'libinput' for 'Integrated Camera: Integrated C'
->[   181.651] (II) Using input driver 'libinput' for 'Logitech USB Optical Mouse'
->[   181.700] (II) Using input driver 'libinput' for 'Ideapad extra buttons'
->[   181.734] (II) Using input driver 'libinput' for 'MSFT0001:00 2808:0101 Touchpad'
->[   181.841] (II) Using input driver 'libinput' for 'MSFT0001:00 2808:0101 Mouse'
->[   181.896] (II) Using input driver 'libinput' for 'AT Translated Set 2 keyboard'
->```
+## Quick fix (GUI/Wayland)
+If you use Wayland or the default GNOME session:
+- Open Settings → Mouse & Touchpad
+- Enable "Tap to Click"
 
-You can see the touchpad device log:
+Note: Xorg-specific configs below do not affect Wayland sessions. If you want to use the Xorg method, log out and choose "Ubuntu on Xorg" on the login screen.
 
-`[ 181.734] (II) Using input driver 'libinput' for 'MSFT0001:00 2808:0101 Touchpad'`
-
-## Fix
-### Tapping button re-mapping
-
-Create `30-touchpad.conf` file under `etc/X11/xorg.conf.d/`
+## Check input devices (Xorg)
+One way to see which devices are managed by libinput is the Xorg log file. Run:
 
 ```bash
+grep -i "Using input driver 'libinput'" /var/log/Xorg.0.log || \
+  grep -i "Using input driver 'libinput'" ~/.local/share/xorg/Xorg.0.log || \
+  sudo journalctl -b _COMM=Xorg | grep -i "Using input driver 'libinput'"
+```
+
+Example output:
+
+```
+[   181.467] (II) Using input driver 'libinput' for 'Power Button'
+[   181.523] (II) Using input driver 'libinput' for 'Video Bus'
+[   181.604] (II) Using input driver 'libinput' for 'Integrated Camera: Integrated C'
+[   181.651] (II) Using input driver 'libinput' for 'Logitech USB Optical Mouse'
+[   181.700] (II) Using input driver 'libinput' for 'Ideapad extra buttons'
+[   181.734] (II) Using input driver 'libinput' for 'MSFT0001:00 2808:0101 Touchpad'
+[   181.841] (II) Using input driver 'libinput' for 'MSFT0001:00 2808:0101 Mouse'
+[   181.896] (II) Using input driver 'libinput' for 'AT Translated Set 2 keyboard'
+```
+
+You can see the touchpad device line, for example:
+`[ 181.734] (II) Using input driver 'libinput' for 'MSFT0001:00 2808:0101 Touchpad'`
+
+## Fix via Xorg config (advanced)
+### Enable tapping and button mapping
+Create `30-touchpad.conf` under `/etc/X11/xorg.conf.d/` (create the folder if needed):
+
+```bash
+sudo install -d /etc/X11/xorg.conf.d/
 sudo nano /etc/X11/xorg.conf.d/30-touchpad.conf
 ```
 
-Paste the following text and save:
+Paste and save:
 
 ```
 Section "InputClass"
-    Identifier "touchpad"
-    Driver "libinput"
+    Identifier "libinput touchpad"
     MatchIsTouchpad "on"
+    MatchDriver "libinput"
+    Driver "libinput"
+
+    # Enable tap-to-click
     Option "Tapping" "on"
+
+    # Left/Middle/Right mapping for 1/2/3-finger taps
     Option "TappingButtonMap" "lmr"
 EndSection
 ```
 
->Option "Tapping" "on": tapping a.k.a. tap-to-click
+Apply the change by logging out/in or rebooting so Xorg reloads the config.
 
->Option "TappingButtonMap" "lmr": left/middle/right buttons
+## Verify the change
+- In Xorg, re-check the Xorg log for your touchpad line and confirm libinput is used (see command above).
+- Or check device capabilities:
 
-After that the problem will be fixed. Now you will be able to click when you tap touchpad.
+```bash
+libinput list-devices | sed -n '/touchpad/,+20p' | sed -n '1,20p'
+```
 
-## More Information
+Look for `Tapping: enabled`.
 
-Xorg is responsible for managing input devices like touchpads. It uses libinput software library for input handling. So let's learn some information about Xorg and libinput:
+## More information
+- Xorg manages input devices and can be configured via `xorg.conf.d` snippets. See the man page: https://www.x.org/releases/current/doc/man/man5/xorg.conf.5.xhtml
+- libinput provides unified input handling across Xorg and Wayland. Tapping docs: https://wayland.freedesktop.org/libinput/doc/latest/tapping.html
 
-### Xorg
->Xorg, also known as X.Org Server, is an open-source implementation of the X Window System, commonly referred to as "X11" or simply "X." Xorg serves as the display server for graphical environments on Linux and other Unix-like systems. It manages input and output devices such as keyboards, mice, touchpads, monitors, and graphics hardware. You can read more at [Xorg](https://www.x.org/wiki/) wiki page.
-
-### Libinput
->Libinput is an open-source software library that provides a unified input handling interface for Linux-based systems, particularly those using the X Window System (Xorg) or Wayland display server protocols. It is designed to manage input devices such as keyboards, mice, touchpads, and other input peripherals in a consistent and efficient manner.
-
->The primary purpose of libinput is to abstract the complexities of dealing with various input devices and to provide a common API that applications and desktop environments can use to access input data. This abstraction allows developers to create user-friendly interfaces and interactions without needing to worry about the specific details of different hardware devices.
+## FAQs
+- How do I enable tap-to-click on Wayland?
+  - Use GNOME Settings → Mouse & Touchpad → enable Tap to Click. Xorg config files do not apply to Wayland.
+- Where is the Xorg log file?
+  - Typically `/var/log/Xorg.0.log`. On newer systems it may be `~/.local/share/xorg/Xorg.0.log` or available via `journalctl -b _COMM=Xorg`.
+- What does `TappingButtonMap "lmr"` do?
+  - Maps 1/2/3-finger taps to left/middle/right clicks respectively.

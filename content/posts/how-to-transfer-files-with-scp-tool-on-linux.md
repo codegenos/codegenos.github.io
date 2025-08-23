@@ -2,6 +2,7 @@
 author: "CodeGenos"
 title: "How to Transfer Files with scp on Linux"
 date: 2023-09-08T21:28:35+03:00
+lastmod: 2025-08-23T00:00:00+03:00
 description: "Learn how to use the scp command to securely copy files and folders on Linux, with Ubuntu install steps, ports, SSH keys, and practical examples."
 tags: ["Linux", "ssh", "scp", "Ubuntu", "OpenSSH"]
 categories: ["Linux", "ssh"]

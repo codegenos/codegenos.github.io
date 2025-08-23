@@ -2,6 +2,7 @@
 author: "CodeGenos"
 title: "Ubuntu: Fix Touchpad Tap-to-Click via Xorg (libinput)"
 date: 2023-08-11T07:32:05+03:00
+lastmod: 2025-08-23T00:00:00+03:00
 description: "Tap-to-click not working on Ubuntu? Enable it in GNOME or with an Xorg libinput config (30-touchpad.conf). Steps, commands, and verification."
 tags: ["Linux", "Ubuntu", "Touchpad", "Xorg", "Libinput"]
 categories: ["Linux"]

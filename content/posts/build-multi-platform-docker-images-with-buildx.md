@@ -1,6 +1,8 @@
 ---
+author: "CodeGenos"
 title: "Build Multi-Platform Docker Images with Docker Buildx"
 date: 2023-08-27T13:41:03+03:00
+lastmod: 2025-08-23T00:00:00+03:00
 description: "Learn how to build multi-platform (multi-arch) Docker images with Docker Buildx and BuildKit from a single Dockerfile for amd64, arm64, and ARMv7 (Raspberry Pi)."
 tags: ["Docker", "Docker Buildx", "Multi Platform Docker", "Raspberry Pi", "Multi-arch", "BuildKit", "QEMU", "ARMv7"]
 categories: ["Docker", "Docker Buildx"]

@@ -3,9 +3,6 @@ languageCode: en-us
 title: Code Genos
 theme: "PaperMod"
 
-author:
-  name: "CodeGenos"
-
 enableRobotsTXT: true
 buildDrafts: false
 buildFuture: false

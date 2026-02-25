@@ -2,7 +2,7 @@
 author: "CodeGenos"
 title: "React Error Boundaries: Handling Rendering Errors Gracefully"
 date: 2026-02-25T09:00:00Z
-draft: true
+draft: false
 slug: react-error-boundary-guide
 description: "Learn how React Error Boundaries work, how to implement them with class components, and how to use the react-error-boundary library to prevent the white screen of death in your React app."
 summary: "Your React app showed a blank white screen — here is how to prevent it. Walk through rendering vs. runtime errors, class-based Error Boundary implementation, and the react-error-boundary library with practical code examples."

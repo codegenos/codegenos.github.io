@@ -7,3 +7,14 @@
         min-height: unset !important;
     }
 }
+
+.post-content {
+    line-height: 1.8;
+    font-size: 18px;
+    letter-spacing: 0.01em;
+}
+
+.post-content h2, .post-content h3 {
+    margin-top: 2em;
+    color: var(--primary);
+}

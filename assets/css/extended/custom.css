@@ -1,3 +1,7 @@
+:root {
+    --main-width: 728px;
+}
+
 .first-entry {
     min-height: unset !important;
 }
@@ -10,7 +14,7 @@
 
 .post-content {
     line-height: 1.8;
-    font-size: 18px;
+    font-size: 20px;
     letter-spacing: 0.01em;
 }
 

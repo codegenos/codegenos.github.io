@@ -22,14 +22,14 @@ When your React application crashes, the default behavior is brutal: the entire 
 
 **Error Boundaries** are the mechanism React provides to contain these crashes and show meaningful fallback UI instead. This guide covers how rendering errors work, what Error Boundaries can and cannot catch, and how to implement them in a production-ready way.
 
-> **What you'll learn:**
-> 1. The difference between rendering errors and runtime errors
-> 1. Why `try/catch` inside a component cannot stop a child crash
-> 1. How to implement a class-based React Error Boundary from scratch
-> 1. How to use the `react-error-boundary` library for a functional-component workflow
-> 1. When and where to place Error Boundaries in your component tree
+> **🚀 What you'll learn:**
+> 1. **The difference** between rendering errors and runtime errors
+> 1. **Why** `try/catch` inside a component cannot stop a child crash
+> 1. **How to implement** a class-based React Error Boundary from scratch
+> 1. **How to use** the `react-error-boundary` library for a functional-component workflow
+> 1. **When and where** to place Error Boundaries in your component tree
 
-## Where to Place Error Boundaries in Your React App
+## Where to Place Error Boundaries in React App
 
 A well-structured Error Boundary strategy mirrors your component hierarchy. Think of it as a layered safety net:
 

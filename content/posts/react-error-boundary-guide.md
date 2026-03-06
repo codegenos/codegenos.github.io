@@ -12,10 +12,10 @@ keywords: ["react error boundary", "rendering error", "getDerivedStateFromError"
 showtoc: true
 tocopen: false
 cover:
-    image: "images/react-error-boundary-guide.png"
-    alt: "React Error Boundaries: Handling Rendering Errors Gracefully"
-    caption: "React Error Boundaries: Handling Rendering Errors Gracefully"
-    relative: true
+  image: "images/react-error-boundary-guide.png"
+  alt: "React Error Boundaries: Handling Rendering Errors Gracefully"
+  caption: "React Error Boundaries: Handling Rendering Errors Gracefully"
+  relative: true
 ---
 
 When your React application crashes, the default behavior is brutal: the entire component tree unmounts and the user sees a blank white screen. **Error Boundaries** are the mechanism React provides to contain these crashes and show meaningful fallback UI instead. This guide covers how rendering errors work, what Error Boundaries can and cannot catch, and how to implement them in a production-ready way.

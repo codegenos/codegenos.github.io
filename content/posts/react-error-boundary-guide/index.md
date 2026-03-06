@@ -12,7 +12,7 @@ keywords: ["react error boundary", "rendering error", "getDerivedStateFromError"
 showtoc: true
 tocopen: false
 cover:
-  image: "images/react-error-boundary-guide.png"
+  image: "react-error-boundary-guide.png"
   alt: "React Error Boundaries: Handling Rendering Errors Gracefully"
   caption: "React Error Boundaries: Handling Rendering Errors Gracefully"
   relative: true

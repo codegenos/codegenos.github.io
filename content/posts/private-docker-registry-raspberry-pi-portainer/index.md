@@ -8,8 +8,14 @@ description: "Step-by-step guide to run a private Docker registry on Raspberry P
 tags: ["Docker", "Docker Registry", "Raspberry Pi", "Portainer", "Self-hosted"]
 categories: ["Docker"]
 ShowToc: true
+TocOpen: false
 ShowBreadCrumbs: true
 draft: false
+cover:
+  image: "private-docker-registry-raspberry-pi-portainer.png"
+  alt: "How to Install a Private Docker Registry on Raspberry Pi with Portainer (Home Network)"
+  caption: "How to Install a Private Docker Registry on Raspberry Pi with Portainer (Home Network)"
+  relative: true
 ---
 
 Run your own private Docker image registry on a Raspberry Pi using Portainer. This guide uses HTTP only (no TLS) with basic auth enabled. You will deploy the registry and a web UI via a Portainer Stack, configure clients to allow an insecure registry, and verify everything works on your home network.

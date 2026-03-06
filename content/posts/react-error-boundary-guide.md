@@ -10,7 +10,7 @@ tags: ["react", "error-boundary", "javascript", "frontend", "error-handling"]
 categories: ["React", "Javascript"]
 keywords: ["react error boundary", "rendering error", "getDerivedStateFromError", "componentDidCatch", "react-error-boundary", "useErrorBoundary", "white screen of death"]
 showtoc: true
-tocopen: true
+tocopen: false
 cover:
     image: "images/react-error-boundary-guide.png"
     alt: "React Error Boundaries: Handling Rendering Errors Gracefully"

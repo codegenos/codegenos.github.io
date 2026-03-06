@@ -36,7 +36,7 @@ params:
   ShowWordCount: true
   ShowRssButtonInSectionTermList: true
   UseHugoToc: true
-  disableSpecial1stPost: true
+  disableSpecial1stPost: false
   disableScrollToTop: false
   comments: false
   hidemeta: false

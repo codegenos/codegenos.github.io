@@ -1,0 +1,9 @@
+.first-entry {
+    min-height: unset !important;
+}
+
+@media screen and (max-width: 768px) {
+    .first-entry {
+        min-height: unset !important;
+    }
+}

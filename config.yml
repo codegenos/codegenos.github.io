@@ -12,6 +12,9 @@ googleAnalytics: G-61KMSFG0DT
 minify:
   disableXML: true
   minifyOutput: true
+  tdewolff:
+    html:
+      keepQuotes: true
 
 params:
   env: production # to enable google analytics, opengraph, twitter-cards and schema.

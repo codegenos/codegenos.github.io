@@ -22,29 +22,30 @@ This guide shows a clean, reliable way to run n8n on a Raspberry Pi 4 using Dock
 
 > 📝 **Note:** I want to use this setup primarily for AI workflows (transcription, summarization, RAG, content drafting).
 
-## TL;DR / Quick start
-1) Check architecture (arm64 preferred):
-   ```bash
-   uname -m
-   # aarch64 -> 64-bit, armv7l -> 32-bit
-   ```
-2) Create `docker-compose.yml` using the snippet below.
-3) Set `WEBHOOK_URL`, `GENERIC_TIMEZONE`, and `TZ` for your locale.
-4) Start: `docker compose up -d`
-5) Open: `http://raspi.local:5678` (or your Pi’s IP)
-6) Logs: `docker compose logs -f n8n` — Stop: `docker compose stop`
+> [!IMPORTANT]
+> **TL;DR / Quick Start**
+> 1) Check architecture (arm64 preferred):
+>   ```bash
+>   uname -m
+>   # aarch64 -> 64-bit, armv7l -> 32-bit
+>   ```
+> 2) Create `docker-compose.yml` using the snippet below.
+> 3) Set `WEBHOOK_URL`, `GENERIC_TIMEZONE`, and `TZ` for your locale.
+> 4) Start: `docker compose up -d`
+> 5) Open: `http://raspi.local:5678` (or your Pi’s IP)
+> 6) Logs: `docker compose logs -f n8n` — Stop: `docker compose stop`
 
 ## What is n8n?
 
-n8n is an open‑source, self‑hostable workflow automation tool. 
+{{< figure src="n8n.png" alt="n8n" align="center" >}}
+
+n8n is an **open‑source**, self‑hostable **workflow automation tool**. 
 
 You build **automations** by connecting nodes in a **visual editor**: 
 
 Triggers like **webhooks**, **schedules/cron**, **IMAP**, **polling** start a workflow; you **transform data**, **branch logic**, **handle errors**, and **call services/APIs or databases**. 
 
 It’s ideal for glue code and recurring tasks without writing and deploying full apps.
-
-{{< figure src="n8n.png" alt="n8n" align="center" >}}
 
 ---
 

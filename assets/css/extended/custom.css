@@ -22,3 +22,20 @@
     margin-top: 2em;
     color: var(--primary);
 }
+
+.post-content blockquote p:first-child strong:first-child {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.post-content blockquote:has(strong:contains("[!NOTE]")) {
+    border-left: 4px solid #2196f3;
+    background-color: var(--code-bg);
+}
+
+.post-content blockquote:has(strong:contains("[!WARNING]")) {
+    border-left: 4px solid #ff9800;
+    background-color: rgba(255, 152, 0, 0.1);
+}

@@ -22,19 +22,6 @@ This guide shows a clean, reliable way to run n8n on a Raspberry Pi 4 using Dock
 
 > 📝 **Note:** I want to use this setup primarily for AI workflows (transcription, summarization, RAG, content drafting).
 
-> [!IMPORTANT]
-> **TL;DR / Quick Start**
-> 1) Check architecture (arm64 preferred):
->   ```bash
->   uname -m
->   # aarch64 -> 64-bit, armv7l -> 32-bit
->   ```
-> 2) Create `docker-compose.yml` using the snippet below.
-> 3) Set `WEBHOOK_URL`, `GENERIC_TIMEZONE`, and `TZ` for your locale.
-> 4) Start: `docker compose up -d`
-> 5) Open: `http://raspi.local:5678` (or your Pi’s IP)
-> 6) Logs: `docker compose logs -f n8n` — Stop: `docker compose stop`
-
 ## What is n8n?
 
 {{< figure src="n8n.png" alt="n8n" align="center" >}}
@@ -92,6 +79,18 @@ For new messages, generate summaries and priority labels; draft reply suggestion
 ---
 
 ## Installation
+
+### TL;DR / Quick Start
+1) Check architecture (arm64 preferred):
+   ```bash
+   uname -m
+   # aarch64 -> 64-bit, armv7l -> 32-bit
+   ```
+2) Create `docker-compose.yml` using the snippet below.
+3) Set `WEBHOOK_URL`, `GENERIC_TIMEZONE`, and `TZ` for your locale.
+4) Start: `docker compose up -d`
+5) Open: `http://raspi.local:5678` (or your Pi’s IP)
+6) Logs: `docker compose logs -f n8n` — Stop: `docker compose stop`
 
 ### Prerequisites
 - Raspberry Pi 4

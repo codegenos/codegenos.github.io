@@ -8,8 +8,14 @@ description: "Step‑by‑step guide to self‑host n8n locally on Raspberry Pi 
 tags: ["n8n", "Docker", "Docker Compose", "Raspberry Pi"]
 categories: ["n8n", "Docker"]
 ShowToc: true
+TocOpen: false
 ShowBreadCrumbs: true
 draft: false
+cover:
+  image: "self-host-n8n-on-raspberry-pi-4-docker-compose.png"
+  alt: "How to Self-Host n8n on Raspberry Pi 4 (ARM64) with Docker Compose"
+  caption: "How to Self-Host n8n on Raspberry Pi 4 (ARM64) with Docker Compose"
+  relative: true
 ---
 
 This guide shows a clean, reliable way to run n8n on a Raspberry Pi 4 using Docker Compose.
@@ -30,28 +36,61 @@ Note: I want to use this setup primarily for AI workflows (transcription, summar
 
 ## What is n8n?
 
-n8n is an open‑source, self‑hostable workflow automation tool. You build automations by connecting nodes in a visual editor: triggers (webhooks, schedules/cron, IMAP, polling) start a workflow; you transform data, branch logic, handle errors, and call services/APIs or databases. It’s ideal for glue code and recurring tasks without writing and deploying full apps.
+n8n is an open‑source, self‑hostable workflow automation tool. 
 
-### What it’s used for
-- Integrations between services and HTTP APIs
-- ETL/data sync across files, databases, and SaaS tools
-- Notifications/alerts and incident workflows
-- Back‑office automations and internal tools
-- AI automation and LLM workflows (transcription/summarization, data extraction, RAG, chatbots)
+You build **automations** by connecting nodes in a **visual editor**: 
 
-### Example scenarios on a Raspberry Pi
-- Home status alerts: Ping devices on your LAN; if one is down, send a Telegram/email alert and log to SQLite in the `n8n_data` volume.
-- Scheduled backups: Nightly tar selected directories, copy to NAS/S3 via SSH/rclone, and notify on success/failure.
-- RSS to social: Poll an RSS feed, find new items, post to Mastodon/Telegram with throttling.
-- Email to tasks: Watch a label via IMAP; create tasks in Notion/Trello/GitHub Issues; include attachments saved under `/files`.
+Triggers like **webhooks**, **schedules/cron**, **IMAP**, **polling** start a workflow; you **transform data**, **branch logic**, **handle errors**, and **call services/APIs or databases**. 
 
-### Example AI automation scenarios
-- Email triage: For new messages, generate summaries and priority labels; draft reply suggestions with an LLM; route high‑priority items to a chat channel.
-- RAG over local docs: When PDFs land in `/files/docs`, create embeddings (OpenAI or small local models); store/search with a lightweight vector DB (e.g., Qdrant container); expose a webhook to answer questions.
-- Content drafting: For each RSS item, have an LLM generate a concise post with hashtags, then publish to Mastodon/Telegram; keep a dedupe key to avoid reposts.
-- Safety/moderation: Run inputs through a moderation endpoint before posting or storing; auto‑redact PII using patterns plus an LLM pass.
+It’s ideal for glue code and recurring tasks without writing and deploying full apps.
 
-## Prerequisites
+---
+
+### 🚀 Core Capabilities
+
+*What you can build with n8n:*
+
+* **API & Service Integration:** Connect HTTP APIs and webhooks.
+* **Data Pipelines (ETL):** Sync data across files, databases, and SaaS platforms.
+* **Ops & Incidents:** Automated notifications, alerts, and response workflows.
+* **Internal Tools:** Streamline back-office tasks and custom dashboards.
+* **AI & LLM Orchestration:** Build RAG pipelines, transcription/summarization, chatbots, and automated data extraction.
+
+### 🍓 Raspberry Pi Use Cases
+
+*Optimized for local, low-power edge computing:*
+
+| Scenario | Scenario | Tools Involved |
+| --- | --- | --- |
+| **Home Monitoring** | Ping devices on your LAN; if one is down, send a Telegram/email alert and log to SQLite in the `n8n_data` volume. | `ICMP`, `Telegram`, `SQLite` |
+| **Scheduled Backups** | Nightly tar selected directories, copy to NAS/S3 via SSH/rclone, and notify on success/failure. | `SSH`, `rclone`, `S3` |
+| **Social Content** | Poll an RSS feed, find new items, post to Mastodon/Telegram with throttling. | `RSS Read`, `Mastodon API` |
+| **Email Triage** | Watch a label via IMAP; create tasks in Notion/Trello/GitHub Issues; include attachments saved under `/files`. | `IMAP`, `Notion`, `GitHub` |
+
+### 🤖 Advanced AI Automations
+
+*Leveraging Large Language Models (LLMs) on your self-hosted instance:*
+
+#### 📧 Smart Email Triage
+
+For new messages, generate summaries and priority labels; draft reply suggestions with an LLM; route high‑priority items to a chat channel.
+
+#### 📂 Local RAG (Retrieval-Augmented Generation)
+
+* **Ingest:** Watch `/files/docs` for new PDFs.
+* **Process:** Generate embeddings and store in a **Qdrant** container.
+* **Query:** Expose a webhook to answer questions based on your local data.
+
+#### ✍️ Content & Safety
+
+* **Auto-Drafting:** For each RSS item, have an LLM generate a concise post with hashtags, then publish to Mastodon/Telegram; keep a dedupe key to avoid re-posts.
+* **Moderation:** Redact PII (Personally Identifiable Information) using pattern matching and LLM verification before storage.
+
+---
+
+## Installation
+
+### Prerequisites
 - Raspberry Pi 4
 - Docker and Docker Compose
 
@@ -105,7 +144,7 @@ volumes:
 - `n8n_data`: A volume mapped to `/home/node/.n8n`. n8n saves its SQLite database file and encryption key here.
 - `./local-files`: A local directory shared between the n8n instance and host. In n8n, use the `/files` path to read from and write to this directory.
 
-## Networking
+### Networking
 - This example exposes n8n over HTTP on your LAN and does not use a domain name.
 - For HTTPS and a domain, place n8n behind a reverse proxy like Traefik with Let’s Encrypt. Set `N8N_PROTOCOL=https` and `WEBHOOK_URL` to your HTTPS URL (e.g., `https://n8n.example.com`); let the proxy terminate TLS and route requests to the n8n container.
 

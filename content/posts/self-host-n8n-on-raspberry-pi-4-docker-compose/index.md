@@ -44,6 +44,8 @@ Triggers like **webhooks**, **schedules/cron**, **IMAP**, **polling** start a wo
 
 It’s ideal for glue code and recurring tasks without writing and deploying full apps.
 
+{{< figure src="n8n.png" alt="n8n" align="center" >}}
+
 ---
 
 ### 🚀 Core Capabilities

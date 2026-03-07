@@ -20,7 +20,7 @@ cover:
 
 This guide shows a clean, reliable way to run n8n on a Raspberry Pi 4 using Docker Compose.
 
-Note: I want to use this setup primarily for AI workflows (transcription, summarization, RAG, content drafting).
+> 📝 **Note:** I want to use this setup primarily for AI workflows (transcription, summarization, RAG, content drafting).
 
 ## TL;DR / Quick start
 1) Check architecture (arm64 preferred):

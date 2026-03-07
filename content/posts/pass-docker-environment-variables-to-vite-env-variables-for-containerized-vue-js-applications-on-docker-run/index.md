@@ -8,6 +8,11 @@ categories: ["Docker", "Vue.js", "Vite"]
 ShowToc: false
 ShowBreadCrumbs: true
 draft: false
+cover:
+  image: "docker-env-variables-vite-containerized-vue-js-docker.png"
+  alt: "Pass Docker Env Variables to Vite Containerized Vue.js on Docker Run"
+  caption: "Pass Docker Env Variables to Vite Containerized Vue.js on Docker Run"
+  relative: true
 ---
 
 Environment variables can only be used in Vue.js applications at build time and the variables are hardcoded in javascript files during build. 

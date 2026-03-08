@@ -6,8 +6,14 @@ description: "Add generic aggregate functions like count, sum, average, min and 
 tags: ["Typescript", "Javascript", "prototype"]
 categories: ["Typescript", "Javascript"]
 ShowToc: false
+TocOpen: false
 ShowBreadCrumbs: true
 draft: false
+cover:
+  image: "typescript-array-extend-with-generic-aggregate-functions.png"
+  alt: "Typescript: Extend Array type with sum count avg min max Aggregates"
+  caption: "Typescript: Extend Array type with sum count avg min max Aggregates"
+  relative: true
 ---
 
 In this article i'll show you how to implement `sum`, `count`, `avg`, `min` and `max` aggregate functions that applies to all Array instances in typescript.

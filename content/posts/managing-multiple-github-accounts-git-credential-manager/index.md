@@ -6,8 +6,14 @@ description: "How to manage multiple github accounts with git credential manager
 tags: ["Github", "Git", "Git Credential Manager"]
 categories: ["Github"]
 ShowToc: false
+TocOpen: false
 ShowBreadCrumbs: true
 draft: false
+cover:
+  image: "managing-multiple-github-accounts-git-credential-manager.png"
+  alt: "Managing Multiple Github Accounts with Git Credential Manager"
+  caption: "Managing Multiple Github Accounts with Git Credential Manager"
+  relative: true
 ---
 
 If you have more than one github account and want to contribute your projects from one computer, you can manage accounts using `git credential manager`.

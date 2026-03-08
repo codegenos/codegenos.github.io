@@ -7,8 +7,14 @@ description: "Learn how to build multi-platform (multi-arch) Docker images with 
 tags: ["Docker", "Docker Buildx", "Multi Platform Docker", "Raspberry Pi", "Multi-arch", "BuildKit", "QEMU", "ARMv7"]
 categories: ["Docker", "Docker Buildx"]
 ShowToc: true
+TocOpen: false
 ShowBreadCrumbs: true
 draft: false
+cover:
+  image: "build-multi-platform-docker-images-with-buildx.png"
+  alt: "Build Multi-Platform Docker Images with Docker Buildx"
+  caption: "Build Multi-Platform Docker Images with Docker Buildx"
+  relative: true
 ---
 
 ## Intro

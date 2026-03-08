@@ -7,8 +7,14 @@ description: "Learn how to use the scp command to securely copy files and folder
 tags: ["Linux", "ssh", "scp", "Ubuntu", "OpenSSH"]
 categories: ["Linux", "ssh"]
 ShowToc: true
+TocOpen: false
 ShowBreadCrumbs: true
 draft: false
+cover:
+  image: "how-to-transfer-files-with-scp-tool-on-linux.png"
+  alt: "How to Transfer Files with scp on Linux"
+  caption: "How to Transfer Files with scp on Linux"
+  relative: true
 ---
 
 Need to copy files to a headless Raspberry Pi over SSH? The `scp` command lets you securely transfer files and folders between machines on Linux. This guide covers local↔remote and remote↔remote copies, plus useful flags.

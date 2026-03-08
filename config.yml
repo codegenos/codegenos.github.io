@@ -9,6 +9,8 @@ buildFuture: false
 buildExpired: false
 googleAnalytics: G-61KMSFG0DT
 
+paginate: 5
+
 minify:
   disableXML: true
   minifyOutput: true

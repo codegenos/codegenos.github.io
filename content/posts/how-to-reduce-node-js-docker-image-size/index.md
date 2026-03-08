@@ -6,8 +6,14 @@ description: "This article is about reducing Node.js Docker image size from 1GB 
 tags: ["Docker", "Node.js"]
 categories: ["Docker", "Node.js"]
 ShowToc: false
+TocOpen: false
 ShowBreadCrumbs: true
 draft: false
+cover:
+  image: "how-to-reduce-node-js-docker-image-size.png"
+  alt: "How to Reduce Node.js Docker Image Size?"
+  caption: "How to Reduce Node.js Docker Image Size?"
+  relative: true
 ---
 
 I had a web application which is written in Node.js and I wanted to dockerize it. So went to the Node.js official site and found [Dockerizing a Node.js web app](https://nodejs.org/en/docs/guides/nodejs-docker-webapp) article. I created the `Dockerfile` as it says in the article. Then I built the docker image with `docker build`, the created image size was `1.09GB`

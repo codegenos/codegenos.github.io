@@ -6,8 +6,14 @@ description: "This article is about the firefox executable file not found in $PA
 tags: ["Linux", "Flatpak", "Firefox"]
 categories: ["Firefox", "Linux"]
 ShowToc: true
+TocOpen: false
 ShowBreadCrumbs: true
 draft: false
+cover:
+  image: "firefox-executable-not-found-in-path-flatpak-installation-linux.png"
+  alt: "Firefox Executable File not Found in $PATH for Flatpak on Linux"
+  caption: "Firefox Executable File not Found in $PATH for Flatpak on Linux"
+  relative: true
 ---
 
 ## Intro

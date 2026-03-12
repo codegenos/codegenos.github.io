@@ -7,8 +7,14 @@ description: "Tap-to-click not working on Ubuntu? Enable it in GNOME or with an 
 tags: ["Linux", "Ubuntu", "Touchpad", "Xorg", "Libinput"]
 categories: ["Linux"]
 ShowToc: true
+TocOpen: false
 ShowBreadCrumbs: true
 draft: false
+cover:
+  image: "how-to-fix-touchpad-tap-to-click-problem-via-xorg-config-on-ubuntu.png"
+  alt: "Ubuntu: Fix Touchpad Tap-to-Click via Xorg (libinput)"
+  caption: "Ubuntu: Fix Touchpad Tap-to-Click via Xorg (libinput)"
+  relative: true
 ---
 
 ## Problem

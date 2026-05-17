@@ -2,7 +2,7 @@
 author: "CodeGenos"
 title: "yt-dlp-console: An Interactive CLI So You Never Memorize Flags Again"
 date: 2026-05-17T20:00:00+03:00
-lastmod: 2026-05-17T20:00:00+03:00
+lastmod: 2026-05-17T21:50:00+03:00
 slug: "yt-dlp-console-interactive-cli-video-downloader"
 description: "yt-dlp-console is an interactive terminal wrapper for yt-dlp that guides you through video downloads step-by-step — no flags or format codes to memorize."
 summary: "Every time I needed to download a video with yt-dlp, I'd end up Googling the same flags. So I built yt-dlp-console — an interactive terminal wrapper that guides you through the whole process without memorizing a single flag."
@@ -12,9 +12,9 @@ keywords: ["yt-dlp", "yt-dlp interactive", "yt-dlp console", "yt-dlp GUI", "yt-d
 ShowToc: true
 TocOpen: false
 ShowBreadCrumbs: true
-draft: true
+draft: false
 cover:
-  image: "cover.png"
+  image: "yt-dlp-console-interactive-cli-video-downloader.png"
   alt: "yt-dlp-console interactive terminal screenshot"
   caption: "yt-dlp-console — interactive video downloads without memorizing flags"
   relative: true

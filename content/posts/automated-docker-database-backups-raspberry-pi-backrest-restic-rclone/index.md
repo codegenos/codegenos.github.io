@@ -1,10 +1,10 @@
 ---
 author: "CodeGenos"
-title: "Automated Database Backups on Raspberry Pi: An Orchestration Guide using Backrest, Restic, and Rclone"
+title: "Automated Docker Database Backups on Raspberry Pi: An Orchestration Guide using Backrest, Restic, and Rclone"
 date: 2026-07-08T21:40:00+03:00
 lastmod: 2026-07-08T21:40:00+03:00
-slug: "automated-database-backups-raspberry-pi-backrest-restic-rclone"
-description: "A step-by-step guide to automating database backups on a self-hosted Raspberry Pi using Backrest for orchestration, Restic for deduplication and encryption, and Rclone to ship snapshots to Google Drive."
+slug: "automated-docker-database-backups-raspberry-pi-backrest-restic-rclone"
+description: "A step-by-step guide to automating docker database backups on a self-hosted Raspberry Pi using Backrest for orchestration, Restic for deduplication and encryption, and Rclone to ship snapshots to Google Drive."
 summary: "Running databases on a home lab Raspberry Pi is fine — until the SD card dies and you realize you had no consistent backups. This guide walks through a production-grade backup pipeline using Backrest, Restic, and Rclone, with pre-backup hooks that dump PostgreSQL and MongoDB before the snapshot even starts."
 tags: ["Raspberry Pi", "Docker", "Docker Compose", "Backrest", "Restic", "Rclone", "PostgreSQL", "MongoDB", "Backup", "Self-Hosting"]
 categories: ["Raspberry Pi", "Docker", "DevOps"]

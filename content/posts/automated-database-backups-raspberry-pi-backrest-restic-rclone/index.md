@@ -1,8 +1,8 @@
 ---
 author: "CodeGenos"
 title: "Automated Database Backups on Raspberry Pi: An Orchestration Guide using Backrest, Restic, and Rclone"
-date: 2026-05-26T12:00:00+03:00
-lastmod: 2026-05-26T12:00:00+03:00
+date: 2026-07-08T21:40:00+03:00
+lastmod: 2026-07-08T21:40:00+03:00
 slug: "automated-database-backups-raspberry-pi-backrest-restic-rclone"
 description: "A step-by-step guide to automating database backups on a self-hosted Raspberry Pi using Backrest for orchestration, Restic for deduplication and encryption, and Rclone to ship snapshots to Google Drive."
 summary: "Running databases on a home lab Raspberry Pi is fine — until the SD card dies and you realize you had no consistent backups. This guide walks through a production-grade backup pipeline using Backrest, Restic, and Rclone, with pre-backup hooks that dump PostgreSQL and MongoDB before the snapshot even starts."
@@ -12,12 +12,7 @@ keywords: ["raspberry pi backup", "restic backup", "backrest docker", "rclone go
 ShowToc: true
 TocOpen: false
 ShowBreadCrumbs: true
-draft: true
-cover:
-  image: "automated-database-backups-raspberry-pi-backrest-restic-rclone.png"
-  alt: "Automated Database Backups on Raspberry Pi with Backrest, Restic, and Rclone"
-  caption: "A production-grade backup pipeline for your home lab — Backrest + Restic + Rclone"
-  relative: true
+draft: false
 ---
 
 A Raspberry Pi home lab can run a surprising number of workloads: automation servers, media managers, self-hosted apps, and more. Most of them share one critical dependency — a database; PostgreSQL or MongoDB instances quietly grows months of data, and the failure mode can be: a dead SD card, a failed OS upgrade, or an accidental `docker volume rm`.
@@ -51,8 +46,8 @@ The result is a "set it and forget it" system that you can verify, test restores
 │                                                     │
 │  1. Pre-Backup Hook (CONDITION_SNAPSHOT_START)      │
 │     └─ sh -c "docker exec -e PGPASSWORD='***'       |
-|           -t container-name pg_dump -U user dbname  | 
-|           | gzip > /userdata/postgres.sql.gz"       │
+|           -t container-name pg_dump -Fp             |
+|           -U user dbname > /userdata/postgres.sql"  │
 │     └─ sh -c "docker exec container-name mongodump  |
 |           --archive --username user --password ***  |
 |           --authenticationDatabase admin            |
@@ -235,7 +230,7 @@ In the Backrest UI, navigate to your plan and add **Pre-Backup Hooks**. Choose `
 ### PostgreSQL — `pg_dump`
 
 ```bash
-sh -c "docker exec -e PGPASSWORD='***' -t container-name pg_dump -U user dbname > /userdata/postgres.sql"     
+sh -c "docker exec -e PGPASSWORD='***' -t container-name pg_dump -Fp -U user dbname > /userdata/postgres.sql"     
 ```
 
 ### MongoDB — `mongodump` with Archive Format
@@ -259,33 +254,14 @@ ls -la /var/run/docker.sock
 
 ---
 
-## Step 5: Retention Policies and Automatic Pruning
+## Step 5: Configuring Retention Policy
 
-Unconstrained snapshots will eventually fill your Google Drive and slow down Restic operations. Configure a retention policy in the Backrest plan settings.
+The **Retention Policy** defines the lifecycle of your snapshots, dictating which backups should be preserved and which should be marked as obsolete.
 
-A sensible policy for a home lab:
+You can configure this within your **Backup Plan** settings. Depending on your needs, you can choose between:
 
-| Keep | Count |
-|---|---|
-| Last N snapshots | 7 (daily safety net) |
-| Daily snapshots | 14 days |
-| Weekly snapshots | 8 weeks |
-| Monthly snapshots | 6 months |
-
-In Backrest UI terms, this maps to the **Forget** policy on a plan:
-
-```json
-{
-  "keep_last": 7,
-  "keep_daily": 14,
-  "keep_weekly": 8,
-  "keep_monthly": 6
-}
-```
-
-Enable **Prune after forget** to let Restic reclaim storage from deleted snapshots. On a Pi with limited RAM (especially the 2 GB variants), schedule prune operations during off-peak hours — pruning a large Restic repository can be memory-intensive.
-
-TODO: Test from ui.
+* **By Count**: Ideal for maintaining a specific number of recent versions.
+* **By Time Period**: Allows for more complex granular retention, such as keeping daily backups for two weeks, weekly backups for two months, and monthly backups for half a year.
 
 ---
 
@@ -307,8 +283,6 @@ docker exec backrest restic \
 
 `--read-data-subset=10%` reads a random 10% of pack files each run. Over 10 runs you have statistically verified the entire repository without the cost of downloading everything each time. This is the right cadence for a Pi on a home internet connection.
 
-TODO: Test it.
-
 ### Restoring a PostgreSQL Database
 
 **Step 1: List available snapshots**
@@ -319,7 +293,7 @@ docker exec backrest restic \
   snapshots
 ```
 
-**Step 2: Restore the dump file from a specific snapshot**
+**Step 2: Restore the sql dump file from a specific snapshot**
 
 ```bash
 docker exec backrest restic \
@@ -329,24 +303,20 @@ docker exec backrest restic \
   --include /backup/postgres/
 ```
 
-**Step 3: Load the dump into PostgreSQL**
+**Step 3: Load the sql dump into PostgreSQL**
 
 ```bash
-# Copy the restored dump into the running postgres container
-docker cp /tmp/restore/backup/postgres/mydb_<timestamp>.dump \
-  postgres_container:/tmp/mydb_restore.dump
+# Copy the restored sql dump into the running postgres container
+docker cp /tmp/restore/backup/postgres/mydb_<timestamp>.sql \
+  postgres_container:/tmp/mydb_restore.sql
 
 # Restore using pg_restore
 docker exec postgres_container \
-  pg_restore \
+  psql \
     -U postgres \
     -d mydb_restored \
-    --clean \
-    --if-exists \
-    /tmp/mydb_restore.dump
+    -f /tmp/mydb_restore.sql
 ```
-
-TODO: convert to plain sql solution
 
 ### Restoring a MongoDB Database
 
@@ -370,8 +340,6 @@ docker exec mongo_container \
     --archive=/tmp/mongo_restore.archive \
     --drop   # drops existing collections before restoring — omit if you want a merge
 ```
-
-TODO: test it
 
 ---
 
@@ -423,6 +391,8 @@ The pipeline described here — Backrest orchestrating pre-backup hooks that gen
 Once this is running, the operational overhead drops to near zero. Review the Backrest dashboard weekly, run a test restore monthly, and rotate your repository password annually. The rest is automated.
 
 Your databases are safe. You can sleep.
+
+---
 
 ## References
 - Restic Design Documentation: https://restic.readthedocs.io/en/latest/100_references.html

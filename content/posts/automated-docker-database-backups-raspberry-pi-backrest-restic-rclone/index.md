@@ -12,12 +12,7 @@ keywords: ["raspberry pi backup", "restic backup", "backrest docker", "rclone go
 ShowToc: true
 TocOpen: false
 ShowBreadCrumbs: true
-draft: true
-cover:
-  image: "automated-database-backups-raspberry-pi-backrest-restic-rclone.png"
-  alt: "Automated Database Backups on Raspberry Pi with Backrest, Restic, and Rclone"
-  caption: "A production-grade backup pipeline for your home lab — Backrest + Restic + Rclone"
-  relative: true
+draft: false
 ---
 
 A Raspberry Pi home lab can run a surprising number of workloads: automation servers, media managers, self-hosted apps, and more. Most of them share one critical dependency — a database; PostgreSQL or MongoDB instances quietly grows months of data, and the failure mode can be: a dead SD card, a failed OS upgrade, or an accidental `docker volume rm`.

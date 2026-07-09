@@ -235,7 +235,10 @@ In the Backrest UI, navigate to your plan and add **Pre-Backup Hooks**. Choose `
 ### PostgreSQL — `pg_dump`
 
 ```bash
-sh -c "docker exec -e PGPASSWORD='***' -t container-name pg_dump -Fp -U user dbname > /userdata/postgres.sql"     
+sh -c "docker exec -e PGPASSWORD='***' -t container-name \
+      pg_dump -Fp \
+      -U user \
+      dbname > /userdata/postgres.sql"     
 ```
 
 > **Tip: Use `-Fc` for larger databases.** The plain text format (`-Fp`) is human-readable and portable, but the custom binary format (`-Fc`) offers two practical benefits for this backup pipeline:
@@ -249,7 +252,12 @@ sh -c "docker exec -e PGPASSWORD='***' -t container-name pg_dump -Fp -U user dbn
 The `--archive` flag streams the dump to a single file, which is far more efficient to snapshot than a directory of BSON files.
 
 ```bash
-sh -c "docker exec container-name mongodump --archive --username user --password *** --authenticationDatabase admin > /userdata/mongo-backup.archive"
+sh -c "docker exec container-name \
+      mongodump --archive \
+      --username user \
+      --password *** \
+      --authenticationDatabase admin \
+      > /userdata/mongo-backup.archive"
 ```
 
 ### Verifying Hook Execution

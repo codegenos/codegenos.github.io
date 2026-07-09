@@ -238,6 +238,12 @@ In the Backrest UI, navigate to your plan and add **Pre-Backup Hooks**. Choose `
 sh -c "docker exec -e PGPASSWORD='***' -t container-name pg_dump -Fp -U user dbname > /userdata/postgres.sql"     
 ```
 
+> **Tip: Use `-Fc` for larger databases.** The plain text format (`-Fp`) is human-readable and portable, but the custom binary format (`-Fc`) offers two practical benefits for this backup pipeline:
+>
+> **Restore performance** — `-Fc` dumps support parallel restore via `pg_restore -j $(nproc)`. On a Pi's limited CPU, this can cut restore time by hours for multi-GB databases.
+>
+> To switch, replace `pg_dump -Fp` with `pg_dump -Fc` and use `pg_restore` instead of `psql` during restoration (see the restore section for reference).
+
 ### MongoDB — `mongodump` with Archive Format
 
 The `--archive` flag streams the dump to a single file, which is far more efficient to snapshot than a directory of BSON files.

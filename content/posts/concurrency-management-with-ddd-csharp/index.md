@@ -1,19 +1,25 @@
 ---
 author: "CodeGenos"
 title: "Concurrency Management with DDD in C#: Optimistic Locking, Versioning, and ETags"
-date: 2026-07-14T09:00:00Z
-draft: true
-slug: concurrency-management-with-ddd
-description: "A practical guide to concurrency in Domain‑Driven Design using C#: aggregate versioning, EF Core RowVersion, retries, and HTTP ETags."
+date: 2026-07-15T17:14:00+03:00
+lastmod: 2026-07-15T17:14:00+03:00
+draft: false
+slug: concurrency-management-with-ddd-csharp
+description: "Learn optimistic concurrency in DDD with C#: EF Core RowVersion, aggregate versioning, Polly retries, and HTTP ETags. Production-ready code examples."
 summary: "Handle concurrent updates safely in DDD with optimistic concurrency, aggregate versioning, EF Core, and ETags. Includes production-ready C# snippets."
 tags: ["ddd", "concurrency", "optimistic-locking", "ef-core", "csharp", "etag", "polly"]
-categories: ["architecture", ".NET"]
+categories: ["ddd", ".NET"]
 keywords: ["DDD concurrency", "optimistic concurrency control", "EF Core RowVersion", "aggregate version", "If-Match ETag", "Polly retry", "ASP.NET Core concurrency"]
 showtoc: true
-tocopen: true
+tocopen: false
+cover:
+  image: "concurrency-management-with-ddd-csharp.png"
+  alt: "Concurrency Management with DDD in C#: Optimistic Locking, Versioning, and ETags"
+  caption: "A practical guide to concurrency in Domain‑Driven Design using C#: aggregate versioning, EF Core RowVersion, retries, and HTTP ETags."
+  relative: true
 ---
 
-Concurrency is inevitable when multiple users or services change the same data. In Domain-Driven Design (DDD), we protect invariants inside an Aggregate boundary and use optimistic concurrency to avoid lost updates without resorting to database locks. This post shows practical C# patterns with EF Core and ASP.NET Core.
+Concurrency is inevitable when multiple users or services change the same data. In [Domain-Driven Design](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/domain-modeling-pros-cons), we protect invariants inside an Aggregate boundary and use optimistic concurrency to avoid lost updates without resorting to database locks. This post shows practical C# patterns with EF Core and ASP.NET Core.
 
 ## Key ideas
 
@@ -24,7 +30,7 @@ Concurrency is inevitable when multiple users or services change the same data. 
 
 ## Pattern 1 — Aggregate versioning with EF Core RowVersion
 
-RowVersion (a byte[] timestamp) is a simple, reliable concurrency token that EF Core understands out of the box.
+RowVersion (a byte[] concurrency token) is a simple, reliable concurrency token that EF Core understands out of the box.
 
 ### How RowVersion Works Under the Hood
 
@@ -54,14 +60,21 @@ WHERE [Id] = @p2 AND [RowVersion] = @p3;
 
 This is the core of optimistic concurrency: the database atomically checks whether the row has changed since it was read, and rejects the update if it has.
 
-**PostgreSQL equivalent:** PostgreSQL uses `xmin` (the transaction ID of the inserting/updating transaction) as its built-in concurrency token. No extra column is needed — EF Core can map it automatically:
+**PostgreSQL equivalent:** PostgreSQL uses `xmin` (the transaction ID of the inserting/updating transaction) as its built-in concurrency token. This is a hidden system column so no extra column is needed in the table. You can map a `uint` property to the PostgreSQL `xmin` system column using the standard EF Core mechanisms:
+
+```csharp
+public class Order
+{
+    public int Id { get; set; }
+    public uint Version { get; set; }
+}
+```
 
 ```csharp
 // PostgreSQL exposes xmin through the standard concurrency token mechanism.
-// Use an explicit integer Version column if xmin wrapping is a concern.
 modelBuilder.Entity<Order>()
     .Property(o => o.Version)
-    .IsConcurrencyToken();
+    .IsRowVersion();
 ```
 
 **SQLite:** SQLite has no native concurrency token type. You must manage a `Version` integer column entirely in application code or via triggers.
@@ -201,6 +214,13 @@ catch (DbUpdateConcurrencyException ex)
 
 After detecting a conflict, reload the latest aggregate state, re-apply the command, and retry. Keep retries bounded and fast.
 
+[Polly](https://www.pollydocs.org/) is the de-facto resilience library for .NET. It provides strategies for handling transient faults — **Retry**, **Circuit Breaker**, **Timeout**, **Fallback**, **Rate Limiter**, and **Hedging** — in a fluent, thread-safe API. For concurrency management, the two most relevant strategies are:
+
+| Strategy | Purpose |
+|----------|---------|
+| **Retry** | Re-execute a failed operation after a delay. Use for transient conflicts (e.g., optimistic concurrency exceptions). |
+| **Circuit Breaker** | Stop executing when failures exceed a threshold. Use to protect downstream systems from cascading failures. |
+
 ```csharp
 using Polly;
 using Polly.Retry;
@@ -209,9 +229,15 @@ public sealed class SubmitOrderHandler
 {
     private readonly OrdersRepository _repo;
     private readonly OrderingDbContext _db;
-    private static readonly AsyncRetryPolicy Retry = Policy
-        .Handle<ConcurrencyException>()
-        .WaitAndRetryAsync(3, attempt => TimeSpan.FromMilliseconds(50 * attempt));
+    private static readonly ResiliencePipeline Retry = new ResiliencePipelineBuilder()
+        .AddRetry(new RetryStrategyOptions
+        {
+            MaxRetryAttempts = 3,
+            Delay = TimeSpan.FromMilliseconds(50),
+            BackoffType = DelayBackoffType.Exponential,
+            ShouldHandle = new PredicateBuilder().Handle<ConcurrencyException>(),
+        })
+        .Build();
 
     public SubmitOrderHandler(OrdersRepository repo, OrderingDbContext db)
     {
@@ -219,12 +245,12 @@ public sealed class SubmitOrderHandler
     }
 
     public Task HandleAsync(Guid orderId, CancellationToken ct)
-        => Retry.ExecuteAsync(async () =>
+        => Retry.ExecuteAsync(async _ =>
         {
             var order = await _db.Orders.Include(o => o.Lines).FirstAsync(o => o.Id == orderId, ct);
             order.Submit();
             await _repo.SaveAsync(order, ct);
-        });
+        }, ct);
 }
 ```
 
@@ -247,7 +273,7 @@ The retry policy uses exponential backoff: each retry waits longer than the prev
 ```
 Attempt 1: Wait  50ms
 Attempt 2: Wait 100ms
-Attempt 3: Wait 150ms
+Attempt 3: Wait 200ms
 ```
 
 **Jitter** adds randomness to prevent synchronized retries. Without jitter, all clients that failed at time `T` retry at exactly `T + backoff`, creating a spike of correlated load.
@@ -410,6 +436,8 @@ Client sends PUT/PATCH with If-Match
 
 If you prefer an integer, configure it as a concurrency token. EF Core will include it in the WHERE clause when updating.
 
+**Data Annotations:**
+
 ```csharp
 public class Product
 {
@@ -424,7 +452,11 @@ public class Product
         Name = name;
     }
 }
+```
 
+**Fluent API:**
+
+```csharp
 protected override void OnModelCreating(ModelBuilder modelBuilder)
 {
     modelBuilder.Entity<Product>()
@@ -434,6 +466,17 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
 ```
 
 On save, EF Core throws DbUpdateConcurrencyException if another writer has already incremented Version. You can increment Version in the database via a trigger, or let EF compute it by setting StoreGeneratedPattern where appropriate.
+
+### IsConcurrencyToken() vs. IsRowVersion()
+
+While both handle optimistic concurrency, they serve different scenarios:
+
+| Feature          | IsConcurrencyToken() | IsRowVersion() |
+|------------------|---------------------|----------------|
+| Who updates it?  | **Your application** or a **DB trigger** must change the value on every write. | The **database engine** increments or changes it automatically. |
+| Data Type        | Any supported type (e.g., `int`, `string`, `Guid`). | A `byte[]` array or specialized database type. |
+| Scope            | Only checks the specific configured column(s). | Tracks changes to any column in that entire row. |
+| Provider Support | Works across all databases (SQL Server, PostgreSQL, SQLite, etc.). | Heavily dependent on native DB engine support (e.g., SQL Server rowversion). |
 
 ### How the Integer Version Mechanism Works
 
@@ -474,21 +517,107 @@ CREATE TRIGGER products_version_trigger
     EXECUTE FUNCTION update_version();
 ```
 
-#### Option 2: StoreGeneratedPattern in EF Core
-
-EF Core tells the database to generate the value on INSERT and UPDATE:
+**Data Annotations:**
 
 ```csharp
+// Data Annotations equivalent:
+// [ConcurrencyCheck] marks the property as a concurrency token
+// [DatabaseGenerated(Computed)] tells EF Core the DB generates the value on INSERT and UPDATE
+public class Product
+{
+    public Guid Id { get; private set; }
+    public string Name { get; private set; } = string.Empty;
+
+    [ConcurrencyCheck]
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public int Version { get; private set; }
+}
+```
+
+**Fluent API:**
+
+```csharp
+// Fluent API equivalent — ValueGeneratedOnAddOrUpdate tells EF Core
+// the database controls value generation (trigger)
 protected override void OnModelCreating(ModelBuilder modelBuilder)
 {
     modelBuilder.Entity<Product>()
         .Property(p => p.Version)
         .IsConcurrencyToken()
-        .ValueGeneratedOnAddOrUpdate();
+        .ValueGeneratedOnAddOrUpdate(); // DB handles value generation (trigger)
 }
 ```
 
-This configures the column so the database generates the value. On SQL Server you typically combine this with a default computed column or trigger; on PostgreSQL you can use a `GENERATED ALWAYS AS` column or the trigger above.
+With the trigger approach, EF Core excludes `Version` from INSERT and UPDATE statements — the trigger handles the increment. `[DatabaseGenerated(Computed)]` and `.ValueGeneratedOnAddOrUpdate()` are equivalent; choose whichever fits your style. This configuration tells the framework:
+
+*The database will automatically generate or update the value of this column whenever a row is inserted or updated. Do not try to write to this column; instead, read the new value back from the database after saving.*
+
+#### Option 2: Application Code (C# Increment)
+
+Increment the version in application code using a `SaveChangesInterceptor`:
+
+```csharp
+// Marker interface — entities with application-managed version
+public interface IVersionedEntity
+{
+    int Version { get; set; }
+}
+
+// Domain entity implements the interface
+public class Product : IVersionedEntity
+{
+    public Guid Id { get; private set; }
+    public string Name { get; private set; } = string.Empty;
+
+    [ConcurrencyCheck] // marks as concurrency token via Data Annotations
+    public int Version { get; set; } // public setter for interceptor
+
+    public void Rename(string name)
+    {
+        Name = name;
+    }
+}
+```
+
+```csharp
+// Fluent API equivalent — no ValueGeneratedOnAddOrUpdate because
+// the application controls the value
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<Product>()
+        .Property(p => p.Version)
+        .IsConcurrencyToken();
+}
+```
+
+With the application code approach, `[ConcurrencyCheck]` and `.IsConcurrencyToken()` are equivalent. We do **not** use `[DatabaseGenerated(Computed)]` or `.ValueGeneratedOnAddOrUpdate()` because the application is responsible for incrementing the value — EF Core must include `Version` in the UPDATE statement.
+
+```csharp
+// Interceptor — increments Version on every modified entity before save
+public sealed class ConcurrencyVersionInterceptor : SaveChangesInterceptor
+{
+    public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
+        DbContextEventData eventData,
+        InterceptionResult<int> result,
+        CancellationToken cancellationToken = default)
+    {
+        if (eventData.Context is null) return ValueTask.FromResult(result);
+
+        foreach (var entry in eventData.Context.ChangeTracker.Entries<IVersionedEntity>())
+        {
+            if (entry.State == EntityState.Modified)
+                entry.Entity.Version++;
+        }
+
+        return ValueTask.FromResult(result);
+    }
+}
+
+// Register in DbContext
+dbContext.AddInterceptor(new ConcurrencyVersionInterceptor());
+```
+
+The interceptor runs before `SaveChanges` and increments `Version` on every modified entity. No database triggers required — version management stays entirely in the application layer.
 
 ### [ConcurrencyCheck] Attribute Explained
 
@@ -501,28 +630,29 @@ The `[ConcurrencyCheck]` attribute is the Data Annotations equivalent of Fluent 
 
 **Key difference from RowVersion:** Properties decorated with `[ConcurrencyCheck]` are **not** auto-generated by the database. You must manage the value yourself — via triggers, `SaveChanges` interceptors, or manual assignment. If you forget to increment the version, the concurrency check never fires and you silently lose the protection.
 
-### Trigger vs StoreGeneratedPattern
+### Application Code vs Database Trigger
 
-| Aspect | Database Trigger | StoreGeneratedPattern |
-|--------|------------------|----------------------|
-| Location | Database (SQL script / migration) | EF Core configuration |
-| Portability | Database-specific SQL | Provider-specific EF Core config |
-| Transparency | EF Core unaware of trigger | EF Core generates the appropriate SQL |
-| Complexity | Separate migration/script needed | Integrated with EF Core model |
-| Control | Database controls when and how to increment | EF Core controls the value generation |
+| Aspect | Application Code (C#) | Database Trigger |
+|--------|----------------------|------------------|
+| Location | Application layer (interceptor) | Database (SQL migration) |
+| EF Core Config | `.IsConcurrencyToken()` only | `.IsConcurrencyToken().ValueGeneratedOnAddOrUpdate()` |
+| Portability | Fully portable across databases | Database-specific SQL |
+| Value Generation | App increments via interceptor | Trigger increments automatically |
+| Transparency | Visible in application code | Transparent to EF Core |
+| Testing | Easy to unit test | Requires database |
 
 ### Database Comparison
 
 | Database | Native Concurrency Token | Integer Version Support |
 |----------|--------------------------|------------------------|
-| SQL Server | `ROWVERSION` (auto-incrementing 8-byte binary) | Trigger or `StoreGeneratedPattern` |
+| SQL Server | `ROWVERSION` (auto-incrementing 8-byte binary) | Trigger or application code (interceptor) |
 | PostgreSQL | `xmin` (transaction ID, wraps on wraparound) | Trigger or application-managed |
 | SQLite | None | Application-managed only (trigger or code) |
 | MySQL | None (InnoDB uses MVCC internally) | Trigger or application-managed |
 
 ## Pattern 5 — Outbox for consistent integration events
 
-When publishing domain events, persist them in the same transaction as your aggregate changes, then deliver asynchronously from an outbox table. This avoids double-publish or lost-publish scenarios during retries.
+When publishing domain events, persist them in the same transaction as your aggregate changes, then deliver asynchronously from an [outbox table](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/implementation-domain-events#create-the-outbox-table). This avoids double-publish or lost-publish scenarios during retries.
 
 - Transaction 1: Save aggregate + append events to Outbox.
 - Background worker: Reads Outbox, publishes, marks as processed.
@@ -539,6 +669,31 @@ Libraries: MassTransit Outbox, NServiceBus Outbox, or a simple table with a back
 | Load only what you need | Don't load the entire object graph for a simple status update. Include navigation properties only when invariants require them. Smaller loaded graphs reduce memory usage and conflict surface area. |
 
 **PostgreSQL Note:** Using `xmin` as the concurrency token avoids adding an extra column, but be aware that `xmin` values can be frozen and reused in long-running transactions due to VACUUM. For high-concurrency production systems, an explicit integer `Version` column with a trigger is safer and more predictable.
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is pessimistic locking ever needed in DDD?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Rarely. Use it for short, high-contention critical sections where optimistic retries are too expensive. Database-specific locks can hurt scalability."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should the concurrency token live in the domain model?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It can, but many teams treat it as a persistence concern (still exposed as ETag). Keep the domain focused on invariants; keep infrastructure details in infrastructure."
+      }
+    }
+  ]
+}
+</script>
 
 ## FAQ
 
@@ -595,10 +750,11 @@ public class Order
 {
     public Guid Id { get; private set; }
     public byte[] RowVersion { get; private set; } = Array.Empty<byte>();
+    private readonly List<OrderLine> _lines = new();
 
     public void Submit()
     {
-        if (!_lines.Any()) throw new InvalidOperationException("Empty order");
+        if (!_lines.Any()) throw new InvalidOperationException("Cannot submit an empty order.");
         Status = "Submitted";
     }
 }
@@ -773,15 +929,20 @@ public sealed class SubmitOrderHandler
     private readonly OrdersRepository _repo;
     private readonly OrderingDbContext _db;
 
-    private static readonly AsyncRetryPolicy Retry = Policy
-        .Handle<ConcurrencyException>()
-        .WaitAndRetryAsync(
-            retryCount: 3,
-            sleepDurationProvider: attempt => TimeSpan.FromMilliseconds(50 * attempt),
-            onRetry: (exception, delay, attempt, context) =>
+    private static readonly ResiliencePipeline Retry = new ResiliencePipelineBuilder()
+        .AddRetry(new RetryStrategyOptions
+        {
+            MaxRetryAttempts = 3,
+            Delay = TimeSpan.FromMilliseconds(50),
+            BackoffType = DelayBackoffType.Exponential,
+            ShouldHandle = new PredicateBuilder().Handle<ConcurrencyException>(),
+            OnRetry = args =>
             {
-                Console.WriteLine($"Retry {attempt} after {delay.TotalMilliseconds}ms");
-            });
+                Console.WriteLine($"Retry {args.AttemptNumber} after {args.RetryDelay.TotalMilliseconds}ms");
+                return ValueTask.CompletedTask;
+            },
+        })
+        .Build();
 
     public SubmitOrderHandler(OrdersRepository repo, OrderingDbContext db)
     {
@@ -790,7 +951,7 @@ public sealed class SubmitOrderHandler
     }
 
     public Task HandleAsync(Guid orderId, CancellationToken ct)
-        => Retry.ExecuteAsync(async () =>
+        => Retry.ExecuteAsync(async _ =>
         {
             // IMPORTANT: Detach stale entity before re-reading
             var existing = _db.Orders.Local.FirstOrDefault(o => o.Id == orderId);
@@ -802,7 +963,7 @@ public sealed class SubmitOrderHandler
 
             order.Submit();
             await _repo.SaveAsync(order, ct);
-        });
+        }, ct);
 }
 ```
 
@@ -819,3 +980,15 @@ public sealed class SubmitOrderHandler
 - Add a retry policy with exponential backoff and jitter for automated operations
 - Include correlation IDs in error responses
 - Test concurrent scenarios with load-testing tools (k6, Apache Bench, etc.)
+
+
+---
+
+## References
+- [Handling Concurrency Conflicts — EF Core](https://learn.microsoft.com/en-us/ef/core/saving/concurrency)
+- [SQL Server RowVersion Data Type](https://learn.microsoft.com/en-us/sql/t-sql/data-types/rowversion-transact-sql)
+- [PostgreSQL System Columns (xmin)](https://www.postgresql.org/docs/current/ddl-system-columns.html)
+- [Npgsql EF Core Concurrency Tokens](https://www.npgsql.org/efcore/modeling/concurrency.html)
+- [SQLite and EF Core Concurrency Tokens](https://www.bricelam.net/2020/08/07/sqlite-and-efcore-concurrency-tokens.html)
+- [Polly Retry Resilience Strategy](https://www.pollydocs.org/strategies/retry.html)
+- [How to Use ETag Header for Optimistic Concurrency](https://event-driven.io/en/how_to_use_etag_header_for_optimistic_concurrency/)

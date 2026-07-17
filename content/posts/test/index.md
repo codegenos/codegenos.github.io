@@ -14,4 +14,4 @@ ShowBreadCrumbs: false
 draft: false
 ---
 
-<a href="https://www.bloglovin.com/blog/21778151/?claim=8xehb4wmy2r">Follow my blog with Bloglovin</a>
+[Follow my blog with Bloglovin](https://www.bloglovin.com/blog/21778151/?claim=8xehb4wmy2r)

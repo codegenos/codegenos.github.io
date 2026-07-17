@@ -157,3 +157,9 @@ markup:
   defaultMarkdownHandler: goldmark
   goldmark:
     hrefTargetBlank: true
+
+cascade:
+  - params:
+      robotsNoIndex: true
+    target:
+      kind: "{taxonomy,term}"

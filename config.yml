@@ -161,5 +161,7 @@ markup:
 cascade:
   - params:
       robotsNoIndex: true
+    sitemap:
+      disable: true
     target:
       kind: "{taxonomy,term}"

@@ -1,3 +1,12 @@
+{{- $authorEmail := "" }}
+{{- with site.Params.author }}
+  {{- if reflect.IsMap . }}
+    {{- with .email }}
+      {{- $authorEmail = . }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
 {{- $authorName := "" }}
 {{- with site.Params.author }}
   {{- if reflect.IsMap . }}
@@ -36,9 +45,9 @@
     </image>
     {{- end }}
     <generator>Hugo</generator>
-    <language>{{ site.Language.Locale }}</language>{{ with $authorName }}
-    <managingEditor>{{ . }}</managingEditor>{{ end }}{{ with $authorName }}
-    <webMaster>{{ . }}</webMaster>{{ end }}{{ with site.Copyright }}
+    <language>{{ site.Language.Locale }}</language>{{ with $authorEmail }}
+    <managingEditor>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</managingEditor>{{ end }}{{ with $authorEmail }}
+    <webMaster>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</webMaster>{{ end }}{{ with site.Copyright }}
     <copyright>{{ . }}</copyright>{{ end }}{{ if not .Date.IsZero }}
     <lastBuildDate>{{ (index $pages.ByLastmod.Reverse 0).Lastmod.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>{{ end }}
     {{- with .OutputFormats.Get "RSS" }}
@@ -56,7 +65,8 @@
       {{- end }}
       <description>{{ with .Description | html }}{{ . }}{{ else }}{{ .Summary | html }}{{ end -}}</description>
       {{- if and site.Params.ShowFullTextinRSS .Content }}
-      <content:encoded>{{ (printf "<![CDATA[%s]]>" .Content) | safeHTML }}</content:encoded>
+      {{- $content := .Content | replaceRE `(?s)<script[^>]*>.*?</script>` "" }}
+      <content:encoded>{{ (printf "<![CDATA[%s]]>" $content) | safeHTML }}</content:encoded>
       {{- end }}
     </item>
     {{- end }}

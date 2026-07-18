@@ -1,5 +1,5 @@
 baseURL: https://codegenos.github.io/
-languageCode: en-us
+locale: en-us
 title: Code Genos
 theme: "PaperMod"
 
@@ -27,7 +27,8 @@ params:
   title: Code Genos
   description: "Code Genos Computers, Programming and Development Blog"
   keywords: [Code Genos, Computers, Programming, Development, Blog]
-  author: CodeGenos
+  author:
+    name: CodeGenos
   images: ["<link or path of image for opengraph, twitter-cards>"]
   DateFormat: "January 2, 2006"
   defaultTheme: auto # dark, light
@@ -148,6 +149,11 @@ menu:
 pygmentsUseClasses: true
 
 markup:
+  defaultMarkdownHandler: goldmark
+  goldmark:
+    hrefTargetBlank: true
+    renderer:
+      unsafe: true
   highlight:
     # noClasses: false
     # anchorLineNos: true
@@ -155,11 +161,6 @@ markup:
     guessSyntax: true
     lineNos: false
     style: monokai
-
-markup:
-  defaultMarkdownHandler: goldmark
-  goldmark:
-    hrefTargetBlank: true
 
 cascade:
   - params:

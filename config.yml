@@ -33,7 +33,7 @@ params:
   DateFormat: "January 2, 2006"
   defaultTheme: auto # dark, light
   disableThemeToggle: false
-  ShowFullTextinRSS: true
+  ShowFullTextinRSS: false
 
   ShowReadingTime: true
   ShowShareButtons: true
